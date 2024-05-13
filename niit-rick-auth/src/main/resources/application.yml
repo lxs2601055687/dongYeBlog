@@ -1,0 +1,36 @@
+
+server:
+  port: 8096
+spring:
+  application:
+    name: niit-rick-auth
+  cloud:
+    nacos:
+      discovery:
+#        server-addr: 127.0.0.1:8848
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
+
+#  redis:
+#    host: localhost
+#    port: 6379
+#    password: root2023
+#    database: 0
+#    jedis:
+#      pool:
+#        max-active: 8 #最大连接数
+
+  redis:
+    host: 43.136.86.225
+    port: 6379
+    password: 161732z
+    database: 8
+    jedis:
+      pool:
+        max-active: 8 #最大连接数
+
+
+
+
+
