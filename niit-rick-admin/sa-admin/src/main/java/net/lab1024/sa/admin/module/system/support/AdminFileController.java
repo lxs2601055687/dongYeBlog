@@ -12,6 +12,7 @@ import net.lab1024.sa.base.module.support.file.domain.vo.FileVO;
 import net.lab1024.sa.base.module.support.file.service.FileService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Tag(name = SwaggerTagConst.Support.FILE)
+@RequestMapping("/admin")
 public class AdminFileController extends SupportBaseController {
 
     @Resource

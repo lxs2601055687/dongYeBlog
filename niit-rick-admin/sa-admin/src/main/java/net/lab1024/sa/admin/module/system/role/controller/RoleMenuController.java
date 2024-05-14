@@ -25,6 +25,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Tag(name = AdminSwaggerTagConst.System.SYSTEM_ROLE_MENU)
+@RequestMapping("/admin")
 public class RoleMenuController {
 
     @Resource

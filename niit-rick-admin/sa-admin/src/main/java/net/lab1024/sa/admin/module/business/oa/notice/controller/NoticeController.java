@@ -33,6 +33,7 @@ import java.util.List;
  */
 @Tag(name = AdminSwaggerTagConst.Business.OA_NOTICE)
 @RestController
+@RequestMapping("/admin")
 @OperateLog
 public class NoticeController {
 

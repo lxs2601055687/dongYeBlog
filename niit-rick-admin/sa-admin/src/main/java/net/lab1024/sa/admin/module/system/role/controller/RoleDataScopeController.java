@@ -25,6 +25,7 @@ import java.util.List;
  */
 @RestController
 @Tag(name = AdminSwaggerTagConst.System.SYSTEM_ROLE_DATA_SCOPE)
+@RequestMapping("/admin")
 public class RoleDataScopeController {
 
     @Resource

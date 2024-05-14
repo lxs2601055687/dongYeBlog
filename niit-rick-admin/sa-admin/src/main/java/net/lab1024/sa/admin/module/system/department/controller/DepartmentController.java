@@ -27,6 +27,7 @@ import java.util.List;
  */
 @RestController
 @Tag(name = AdminSwaggerTagConst.System.SYSTEM_DEPARTMENT)
+@RequestMapping("/admin")
 public class DepartmentController {
 
     @Resource

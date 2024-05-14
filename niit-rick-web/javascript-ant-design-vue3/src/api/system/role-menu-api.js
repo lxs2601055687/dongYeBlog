@@ -8,17 +8,18 @@
  * @Copyright  1024创新实验室 （ https://1024lab.net ），Since 2012
  */
 import { getRequest, postRequest } from '/src/lib/axios';
+const prefix = '/admin';
 export const roleMenuApi = {
   /**
    * @description: 获取角色关联菜单权限
    */
   getRoleSelectedMenu: (roleId) => {
-    return getRequest(`role/menu/getRoleSelectedMenu/${roleId}`);
+    return getRequest(prefix+`role/menu/getRoleSelectedMenu/${roleId}`);
   },
   /**
    * @description: 更新角色权限
    */
   updateRoleMenu: (data) => {
-    return postRequest('role/menu/updateRoleMenu', data);
+    return postRequest(prefix+'role/menu/updateRoleMenu', data);
   },
 };

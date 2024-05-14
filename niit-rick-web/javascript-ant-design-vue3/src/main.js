@@ -96,7 +96,6 @@ if (!token) {
     const form = encryptPasswordForm;
     const res = await loginApi.login(form);
     localSave(LocalStorageKeyConst.USER_TOKEN, res.data.token ? res.data.token : '');
-    message.success('登录成功12323123');
     //更新用户信息到pinia
     useUserStore().setUserLoginInfo(res.data);
     //构建系统的路由

@@ -28,6 +28,7 @@ import java.util.List;
  */
 @RestController
 @Tag(name = AdminSwaggerTagConst.Business.OA_BANK)
+@RequestMapping("/admin")
 public class BankController {
 
     @Resource

@@ -39,6 +39,7 @@ import java.util.List;
 @RestController
 @Tag(name = AdminSwaggerTagConst.Business.OA_ENTERPRISE)
 @OperateLog
+@RequestMapping("/admin")
 public class EnterpriseController {
 
     @Resource

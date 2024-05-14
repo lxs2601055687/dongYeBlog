@@ -7,6 +7,7 @@ import net.lab1024.sa.admin.module.system.datascope.domain.DataScopeAndViewTypeV
 import net.lab1024.sa.admin.module.system.datascope.service.DataScopeService;
 import net.lab1024.sa.base.common.domain.ResponseDTO;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @Tag(name = AdminSwaggerTagConst.System.SYSTEM_DATA_SCOPE)
+@RequestMapping("/admin")
 public class DataScopeController {
 
     @Resource

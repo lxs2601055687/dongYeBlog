@@ -8,23 +8,23 @@
  * @Copyright  1024创新实验室 （ https://1024lab.net ），Since 2012
  */
 import { getRequest, postRequest } from '/@/lib/axios';
-
+const prefix = '/admin';
 export const categoryApi = {
   // 添加类目 @author 卓大
   addCategory: (param) => {
-    return postRequest('/category/add', param);
+    return postRequest(prefix+'/category/add', param);
   },
   // GET
   // 删除类目 @author 卓大
   deleteCategoryById: (categoryId) => {
-    return getRequest(`/category/delete/${categoryId}`);
+    return getRequest(prefix+`/category/delete/${categoryId}`);
   },
   // 查询类目层级树 @author 卓大
   queryCategoryTree: (param) => {
-    return postRequest('/category/tree', param);
+    return postRequest(prefix+'/category/tree', param);
   },
   // 更新类目 @author 卓大
   updateCategory: (param) => {
-    return postRequest('/category/update', param);
+    return postRequest(prefix+'/category/update', param);
   },
 };

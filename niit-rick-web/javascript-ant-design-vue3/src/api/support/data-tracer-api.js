@@ -8,11 +8,11 @@
  * @Copyright  1024创新实验室 （ https://1024lab.net ），Since 2012
  */
 import { postRequest } from '/src/lib/axios';
-
+const prefix = '/admin';
 export const dataTracerApi = {
   // 分页查询业务操作日志 - @author 卓大
   queryList: (param) => {
-    return postRequest('/support/dataTracer/query', param);
+    return postRequest(prefix+'/support/dataTracer/query', param);
   },
   
 };

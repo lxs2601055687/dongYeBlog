@@ -34,6 +34,7 @@ import java.util.List;
  */
 @Tag(name = SwaggerTagConst.Support.HELP_DOC)
 @RestController
+@RequestMapping("/admin/support")
 public class HelpDocController extends SupportBaseController {
 
     @Resource

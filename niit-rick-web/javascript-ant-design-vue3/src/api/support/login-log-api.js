@@ -8,10 +8,10 @@
  * @Copyright  1024创新实验室 （ https://1024lab.net ），Since 2012
  */
 import { postRequest, getRequest } from '/src/lib/axios';
-
+const prefix = '/admin';
 export const loginLogApi = {
   // 分页查询 @author 卓大
   queryList: (param) => {
-    return postRequest('/support/loginLog/page/query', param);
+    return postRequest(prefix+'/support/loginLog/page/query', param);
   },
 };

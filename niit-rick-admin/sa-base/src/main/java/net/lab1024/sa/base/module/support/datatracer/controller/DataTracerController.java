@@ -11,6 +11,7 @@ import net.lab1024.sa.base.module.support.datatracer.domain.vo.DataTracerVO;
 import net.lab1024.sa.base.module.support.datatracer.service.DataTracerService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -27,6 +28,7 @@ import javax.validation.Valid;
  */
 @Tag(name = SwaggerTagConst.Support.DATA_TRACER)
 @RestController
+@RequestMapping("/admin/support")
 public class DataTracerController extends SupportBaseController {
 
     @Resource

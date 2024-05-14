@@ -25,6 +25,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @Tag(name = SwaggerTagConst.Support.OPERATE_LOG)
+@RequestMapping("/admin")
 public class AdminOperateLogController extends SupportBaseController {
 
     @Resource

@@ -8,18 +8,18 @@
  * @Copyright  1024创新实验室 （ https://1024lab.net ），Since 2012
  */
 import { getRequest } from '/src/lib/axios';
-
+const prefix = '/admin';
 export const homeApi = {
   /**
    * @description: 首页-金额统计（业绩、收款、订单数等） @author 卓大
    */
   homeAmountStatistics: () => {
-    return getRequest('/home/amount/statistics');
+    return getRequest(prefix+'/home/amount/statistics');
   },
   /**
    * @description: 首页-待办信息 @author 卓大
    */
   homeWaitHandle: () => {
-    return getRequest('home/wait/handle');
+    return getRequest(prefix+'home/wait/handle');
   },
 };

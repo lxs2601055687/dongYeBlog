@@ -6,21 +6,21 @@
  * @Copyright  1024创新实验室
  */
 import { postRequest, getRequest } from '/src/lib/axios';
-
+const prefix = '/admin';
 export const loginFailApi = {
 
   /**
    * 分页查询  @author  1024创新实验室-主任-卓大
    */
   queryPage : (param) => {
-    return postRequest('/support/protect/loginFail/queryPage', param);
+    return postRequest(prefix+'/support/protect/loginFail/queryPage', param);
   },
 
   /**
    * 批量删除  @author  1024创新实验室-主任-卓大
    */
   batchDelete: (idList) => {
-      return postRequest('/support/protect/loginFail/batchDelete', idList);
+      return postRequest(prefix+'/support/protect/loginFail/batchDelete', idList);
   },
 
 };

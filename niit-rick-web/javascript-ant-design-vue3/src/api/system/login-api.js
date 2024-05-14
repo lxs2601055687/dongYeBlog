@@ -8,38 +8,38 @@
  * @Copyright  1024创新实验室 （ https://1024lab.net ），Since 2012
  */
 import { getRequest, postRequest } from '/src/lib/axios';
-
+const prefix = '/admin';
 export const loginApi = {
   /**
    * 登录 @author 卓大
    */
   login: (param) => {
-    return postRequest('/login', param);
+    return postRequest(prefix+'/login', param);
   },
 
   /**
    * 退出登录 @author 卓大
    */
   logout: () => {
-    return getRequest('/login/logout');
+    return getRequest(prefix+'/login/logout');
   },
 
   /**
    * 获取验证码 @author 卓大
    */
   getCaptcha: () => {
-    return getRequest('/login/getCaptcha');
+    return getRequest(prefix+'/login/getCaptcha');
   },
 
   /**
    * 获取登录信息 @author 卓大
    */
   getLoginInfo: () => {
-    return getRequest('/login/getLoginInfo');
+    return getRequest(prefix+'/login/getLoginInfo');
   },
 
 
   getVisitorLoginInfo() {
-    return getRequest('/login/getVisitorLoginInfo');
+    return getRequest(prefix+'/login/getVisitorLoginInfo');
   }
 };

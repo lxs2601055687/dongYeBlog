@@ -25,6 +25,7 @@ import javax.validation.Valid;
 
 @RestController
 @Tag(name = SwaggerTagConst.Support.CHANGE_LOG)
+@RequestMapping("/admin")
 public class AdminChangeLogController extends SupportBaseController {
 
     @Resource

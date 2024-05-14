@@ -34,6 +34,7 @@ import java.util.List;
  */
 @RestController
 @Tag(name = AdminSwaggerTagConst.Business.MANAGER_GOODS)
+@RequestMapping("/admin")
 public class GoodsController {
 
     @Resource

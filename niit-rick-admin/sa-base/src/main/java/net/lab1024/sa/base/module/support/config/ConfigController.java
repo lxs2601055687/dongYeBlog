@@ -7,6 +7,7 @@ import net.lab1024.sa.base.common.domain.ResponseDTO;
 import net.lab1024.sa.base.constant.SwaggerTagConst;
 import net.lab1024.sa.base.module.support.config.domain.ConfigVO;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,7 @@ import javax.annotation.Resource;
  */
 @Tag(name = SwaggerTagConst.Support.CONFIG)
 @RestController
+@RequestMapping("/admin/support")
 public class ConfigController extends SupportBaseController {
 
     @Resource

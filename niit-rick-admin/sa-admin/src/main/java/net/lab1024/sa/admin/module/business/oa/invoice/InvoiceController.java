@@ -31,6 +31,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @Tag(name = AdminSwaggerTagConst.Business.OA_INVOICE)
+@RequestMapping("/admin")
 public class InvoiceController {
 
     @Resource

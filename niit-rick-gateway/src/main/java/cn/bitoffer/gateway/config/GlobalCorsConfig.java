@@ -11,6 +11,7 @@ public class GlobalCorsConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
+
         // 这里仅为了说明问题，配置为放行所有域名，生产环境请对此进行修改
         config.addAllowedOriginPattern("*");
         // 放行的请求头

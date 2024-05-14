@@ -11,10 +11,7 @@ import net.lab1024.sa.base.module.support.dict.domain.form.*;
 import net.lab1024.sa.base.module.support.dict.domain.vo.DictKeyVO;
 import net.lab1024.sa.base.module.support.dict.service.DictCacheService;
 import net.lab1024.sa.base.module.support.dict.service.DictService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -31,6 +28,7 @@ import java.util.List;
  */
 @Tag(name = SwaggerTagConst.Support.DICT)
 @RestController
+@RequestMapping("/admin")
 public class AdminDictController extends SupportBaseController {
 
     @Resource

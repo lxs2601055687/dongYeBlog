@@ -28,6 +28,7 @@ import java.util.List;
  */
 @RestController
 @Tag(name = AdminSwaggerTagConst.Business.MANAGER_CATEGORY)
+@RequestMapping("/admin")
 public class CategoryController {
 
     @Resource

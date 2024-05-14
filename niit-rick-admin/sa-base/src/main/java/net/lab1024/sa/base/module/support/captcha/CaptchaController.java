@@ -8,6 +8,7 @@ import net.lab1024.sa.base.common.domain.ResponseDTO;
 import net.lab1024.sa.base.constant.SwaggerTagConst;
 import net.lab1024.sa.base.module.support.captcha.domain.CaptchaVO;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -23,6 +24,7 @@ import javax.annotation.Resource;
  */
 @Tag(name = SwaggerTagConst.Support.CAPTCHA)
 @RestController
+@RequestMapping("/admin/support")
 public class CaptchaController extends SupportBaseController {
 
     @Resource

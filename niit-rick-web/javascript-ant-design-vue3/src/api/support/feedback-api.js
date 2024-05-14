@@ -8,14 +8,14 @@
  * @Copyright  1024创新实验室 （ https://1024lab.net ），Since 2012
  */
 import { postRequest } from '/src/lib/axios';
-
+const prefix = '/admin';
 export const feedbackApi = {
   // 意见反馈-新增
   addFeedback: (params) => {
-    return postRequest('/support/feedback/add', params);
+    return postRequest(prefix+'/support/feedback/add', params);
   },
   // 意见反馈-分页查询
   queryFeedback: (params) => {
-    return postRequest('/support/feedback/query', params);
+    return postRequest(prefix+'/support/feedback/query', params);
   },
 };

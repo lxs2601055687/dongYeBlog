@@ -24,6 +24,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Tag(name = SwaggerTagConst.Support.TABLE_COLUMN)
+@RequestMapping("/admin/support")
 public class TableColumnController extends SupportBaseController {
 
     @Resource

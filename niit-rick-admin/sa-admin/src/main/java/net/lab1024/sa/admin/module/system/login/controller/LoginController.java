@@ -32,6 +32,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Tag(name = AdminSwaggerTagConst.System.SYSTEM_LOGIN)
+@RequestMapping("/admin")
 public class LoginController {
 
     @Resource

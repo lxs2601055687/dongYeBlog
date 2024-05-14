@@ -24,8 +24,9 @@ public class CorsFilterConfig {
     
     /**
      * 跨域配置
+     * 在GATEWAY完成
      */
-    @Bean
+ /*   @Bean*/
     public CorsFilter corsFilter () {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
