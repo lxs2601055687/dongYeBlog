@@ -37,4 +37,9 @@ export const loginApi = {
   getLoginInfo: () => {
     return getRequest('/login/getLoginInfo');
   },
+
+
+  getVisitorLoginInfo() {
+    return getRequest('/login/getVisitorLoginInfo');
+  }
 };

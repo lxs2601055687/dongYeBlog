@@ -10,8 +10,9 @@ import net.lab1024.sa.admin.module.system.department.domain.vo.DepartmentVO;
 import net.lab1024.sa.admin.module.system.department.service.DepartmentService;
 import net.lab1024.sa.admin.module.system.employee.domain.entity.EmployeeEntity;
 import net.lab1024.sa.admin.module.system.employee.service.EmployeeService;
+import net.lab1024.sa.admin.module.system.login.VO.CUserVO;
 import net.lab1024.sa.admin.module.system.login.domain.LoginForm;
-import net.lab1024.sa.admin.module.system.login.domain.LoginResultVO;
+import net.lab1024.sa.admin.module.system.login.VO.LoginResultVO;
 import net.lab1024.sa.admin.module.system.login.domain.RequestEmployee;
 import net.lab1024.sa.admin.module.system.menu.domain.vo.MenuVO;
 import net.lab1024.sa.admin.module.system.role.domain.vo.RoleVO;
@@ -427,5 +428,14 @@ public class LoginService implements StpInterface {
         userPermission.getPermissionList().addAll(permissionSet);
 
         return userPermission;
+    }
+
+    /**
+     * 获取游客登录基本信息
+     * @return
+     */
+    public ResponseDTO<CUserVO> getVisitorLoginInfo() {
+
+      return null;
     }
 }

@@ -24,18 +24,23 @@
         <a-menu-item @click="onLogout">
           <span>退出登录</span>
         </a-menu-item>
+        <a-menu-item @click="onLoginAdmin">
+          <span>管理员登录</span>
+        </a-menu-item>
       </a-menu>
     </template>
   </a-dropdown>
   <HeaderResetPassword ref="resetPasswordRef" />
 </template>
 <script setup>
-  import { computed, ref, onMounted } from 'vue';
+import {computed, ref, onMounted, nextTick} from 'vue';
   import { loginApi } from '/src/api/system/login-api';
   import { useUserStore } from '/@/store/modules/system/user';
   import { localClear } from '/@/utils/local-util';
   import { smartSentry } from '/@/lib/smart-sentry';
   import HeaderResetPassword from './header-reset-password-modal/index.vue';
+  import {router} from "/@/router/index.js";
+  import { useAdminStore } from '/@/store/modules/system/admin.js';
 
   // 头像背景颜色
   const AVATAR_BACKGROUND_COLOR_ARRAY = ['#87d068', '#00B853', '#f56a00', '#1890ff'];
@@ -89,6 +94,22 @@
       hash |= 0; // Convert to 32bit integer
     }
     return hash;
+  }
+
+  /**
+   * 管理员登录
+   */
+  async function onLoginAdmin() {
+    try {
+      await loginApi.logout();
+       router.push('/login');
+      // 设置管理员登录状态
+    } catch (e) {
+      smartSentry.captureError(e);
+    } finally {
+      localClear();
+      useUserStore().logout();
+    }
   }
 
   onMounted(updateAvatar);

@@ -7,6 +7,7 @@ import net.lab1024.sa.base.common.domain.ResponseDTO;
 import net.lab1024.sa.base.common.domain.SystemEnvironment;
 import net.lab1024.sa.base.common.exception.BusinessException;
 import net.lab1024.sa.base.constant.RedisKeyConst;
+import net.lab1024.sa.base.constant.VisitorUserInfoConst;
 import net.lab1024.sa.base.module.support.captcha.domain.CaptchaForm;
 import net.lab1024.sa.base.module.support.captcha.domain.CaptchaVO;
 import net.lab1024.sa.base.module.support.redis.RedisService;
@@ -91,6 +92,12 @@ public class CaptchaService {
     public ResponseDTO<String> checkCaptcha(CaptchaForm captchaForm) {
         if (StringUtils.isBlank(captchaForm.getCaptchaUuid()) || StringUtils.isBlank(captchaForm.getCaptchaCode())) {
             return ResponseDTO.userErrorParam("请输入正确验证码");
+        }
+        /**
+         * 检验是否为游客登录
+         */
+        if(captchaForm.getCaptchaUuid().equals(VisitorUserInfoConst.CAPTCHA_UUID)){
+            return ResponseDTO.ok();
         }
         /*
          * 1、校验redis里的验证码

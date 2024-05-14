@@ -5,8 +5,9 @@ import cn.hutool.extra.servlet.ServletUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import net.lab1024.sa.admin.constant.AdminSwaggerTagConst;
+import net.lab1024.sa.admin.module.system.login.VO.CUserVO;
 import net.lab1024.sa.admin.module.system.login.domain.LoginForm;
-import net.lab1024.sa.admin.module.system.login.domain.LoginResultVO;
+import net.lab1024.sa.admin.module.system.login.VO.LoginResultVO;
 import net.lab1024.sa.admin.module.system.login.service.LoginService;
 import net.lab1024.sa.admin.util.AdminRequestUtil;
 import net.lab1024.sa.base.common.annoation.NoNeedLogin;
@@ -66,5 +67,10 @@ public class LoginController {
     public ResponseDTO<CaptchaVO> getCaptcha() {
         return loginService.getCaptcha();
     }
-
+    @Operation(summary = "游客登录 @author 李祥生")
+    @GetMapping("/login/getVisitorLoginInfo")
+    @NoNeedLogin
+    public ResponseDTO<CUserVO> getVisitorLoginInfo() {
+        return loginService.getVisitorLoginInfo();
+    }
 }

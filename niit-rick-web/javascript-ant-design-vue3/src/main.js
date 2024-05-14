@@ -27,9 +27,15 @@ import { store } from '/@/store';
 import { useUserStore } from '/@/store/modules/system/user';
 import 'ant-design-vue/dist/reset.css';
 import '/@/theme/index.less';
-import { localRead } from '/@/utils/local-util.js';
+import {localRead, localSave} from '/@/utils/local-util.js';
 import LocalStorageKeyConst from '/@/constants/local-storage-key-const.js';
-
+import encryptPasswordForm from '/@/constants/system/visitor-loginInfo-const.js';
+import {createPinia} from "pinia";
+const app = createApp(App);
+const pinia = createPinia();
+app.use(pinia);
+import { useAdminStore } from '/@/store/modules/system/admin.js';
+const adminStore = useAdminStore();
 /*
  * -------------------- ※ 着重 解释说明下main.js的初始化逻辑 begin ※ --------------------
  *
@@ -86,7 +92,17 @@ function initVue() {
 //不需要获取用户信息、用户菜单、用户菜单动态路由，直接初始化vue即可
 let token = localRead(LocalStorageKeyConst.USER_TOKEN);
 if (!token) {
-  initVue();
+    //用游客信息构建LoginForm对象，调用login接口
+    const form = encryptPasswordForm;
+    const res = await loginApi.login(form);
+    localSave(LocalStorageKeyConst.USER_TOKEN, res.data.token ? res.data.token : '');
+    message.success('登录成功12323123');
+    //更新用户信息到pinia
+    useUserStore().setUserLoginInfo(res.data);
+    //构建系统的路由
+    buildRoutes();
+    location.reload();
+ /* initVue();*/
 } else {
   getLoginInfo();
 }

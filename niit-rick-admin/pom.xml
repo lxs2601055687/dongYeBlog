@@ -61,7 +61,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <!--BOM begin-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
