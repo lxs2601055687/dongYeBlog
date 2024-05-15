@@ -12,6 +12,9 @@ import net.lab1024.sa.admin.module.system.employee.domain.entity.EmployeeEntity;
 import net.lab1024.sa.admin.module.system.employee.domain.form.*;
 import net.lab1024.sa.admin.module.system.employee.domain.vo.EmployeeVO;
 import net.lab1024.sa.admin.module.system.employee.manager.EmployeeManager;
+import net.lab1024.sa.admin.module.system.login.VO.LoginResultVO;
+import net.lab1024.sa.admin.module.system.login.domain.LoginForm;
+import net.lab1024.sa.admin.module.system.login.domain.RegisterForm;
 import net.lab1024.sa.admin.module.system.role.dao.RoleEmployeeDao;
 import net.lab1024.sa.admin.module.system.role.domain.vo.RoleEmployeeVO;
 import net.lab1024.sa.base.common.code.UserErrorCode;
@@ -360,4 +363,40 @@ public class EmployeeService {
         return employeeDao.getByLoginName(loginName, null);
     }
 
+    public ResponseDTO<LoginResultVO> addCuser(EmployeeUpdateForm employeeUpdateForm, RegisterForm registerForm) {
+        Long employeeId = employeeUpdateForm.getEmployeeId();
+        EmployeeEntity employeeEntity = employeeDao.selectById(employeeId);
+        if (null == employeeEntity) {
+            return ResponseDTO.error(UserErrorCode.DATA_NOT_EXIST);
+        }
+
+        // 部门是否存在
+        Long departmentId = employeeUpdateForm.getDepartmentId();
+        DepartmentEntity departmentEntity = departmentDao.selectById(departmentId);
+        if (departmentEntity == null) {
+            return ResponseDTO.userErrorParam("部门不存在");
+        }
+
+        EmployeeEntity existEntity = employeeDao.getByLoginName(employeeUpdateForm.getLoginName(), null);
+        if (null != existEntity && !Objects.equals(existEntity.getEmployeeId(), employeeId)) {
+            return ResponseDTO.userErrorParam("登录名重复");
+        }
+
+        existEntity = employeeDao.getByPhone(employeeUpdateForm.getPhone(), null);
+        if (null != existEntity && !Objects.equals(existEntity.getEmployeeId(), employeeId)) {
+            return ResponseDTO.userErrorParam("手机号已存在");
+        }
+
+        existEntity = employeeDao.getByActualName(employeeUpdateForm.getActualName(), null);
+        if (null != existEntity && !Objects.equals(existEntity.getEmployeeId(), employeeId)) {
+            return ResponseDTO.userErrorParam("姓名重复");
+        }
+
+        // 不更新密码
+        EmployeeEntity entity = SmartBeanUtil.copy(employeeUpdateForm, EmployeeEntity.class);
+        entity.setLoginPwd(registerForm.getPassword());
+        // 更新数据
+        employeeManager.updateEmployee(entity, employeeUpdateForm.getRoleIdList());
+        return ResponseDTO.ok();
+    }
 }

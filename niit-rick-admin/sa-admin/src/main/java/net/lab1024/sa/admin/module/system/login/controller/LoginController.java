@@ -8,6 +8,7 @@ import net.lab1024.sa.admin.constant.AdminSwaggerTagConst;
 import net.lab1024.sa.admin.module.system.login.VO.CUserVO;
 import net.lab1024.sa.admin.module.system.login.domain.LoginForm;
 import net.lab1024.sa.admin.module.system.login.VO.LoginResultVO;
+import net.lab1024.sa.admin.module.system.login.domain.RegisterForm;
 import net.lab1024.sa.admin.module.system.login.service.LoginService;
 import net.lab1024.sa.admin.util.AdminRequestUtil;
 import net.lab1024.sa.base.common.annoation.NoNeedLogin;
@@ -68,10 +69,16 @@ public class LoginController {
     public ResponseDTO<CaptchaVO> getCaptcha() {
         return loginService.getCaptcha();
     }
-    @Operation(summary = "游客登录 @author 李祥生")
-    @GetMapping("/login/getVisitorLoginInfo")
+
+    /**
+     * 注册用户接口
+     */
+    @Operation(summary = "注册用户 @author 李祥生")
+    @PostMapping("/register")
     @NoNeedLogin
-    public ResponseDTO<CUserVO> getVisitorLoginInfo() {
-        return loginService.getVisitorLoginInfo();
+    public ResponseDTO<LoginResultVO> register(@Valid @RequestBody RegisterForm registerForm, HttpServletRequest request) {
+        String ip = ServletUtil.getClientIP(request);
+        String userAgent = ServletUtil.getHeaderIgnoreCase(request, RequestHeaderConst.USER_AGENT);
+        return loginService.register(registerForm, ip, userAgent);
     }
 }

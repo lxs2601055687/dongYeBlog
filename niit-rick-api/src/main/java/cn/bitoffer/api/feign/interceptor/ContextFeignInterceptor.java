@@ -19,7 +19,7 @@ public class ContextFeignInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate template) {
-        log.error("hello hello hellohello");
+        log.error("hello hello hello hello");
         // 从请求上下文中获取userId
         // 从请求头中获取 X-User-Id
         List<String> userId= (List<String>)template.headers().get("X-User-Id");

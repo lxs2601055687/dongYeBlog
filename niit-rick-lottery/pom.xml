@@ -83,7 +83,11 @@
 <!--            <artifactId>quartz</artifactId>-->
 <!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter -->
-
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+               <version>3.4.1</version>
+        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
