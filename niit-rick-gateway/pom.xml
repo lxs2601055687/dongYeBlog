@@ -28,6 +28,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
+
         <!--lombok 简化开发-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -55,6 +56,12 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.4.0-b180830.0359</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-core</artifactId>
+            <version>1.37.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
