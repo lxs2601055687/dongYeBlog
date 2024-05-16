@@ -363,40 +363,33 @@ public class EmployeeService {
         return employeeDao.getByLoginName(loginName, null);
     }
 
-    public ResponseDTO<LoginResultVO> addCuser(EmployeeUpdateForm employeeUpdateForm, RegisterForm registerForm) {
-        Long employeeId = employeeUpdateForm.getEmployeeId();
-        EmployeeEntity employeeEntity = employeeDao.selectById(employeeId);
-        if (null == employeeEntity) {
-            return ResponseDTO.error(UserErrorCode.DATA_NOT_EXIST);
-        }
-
-        // 部门是否存在
-        Long departmentId = employeeUpdateForm.getDepartmentId();
-        DepartmentEntity departmentEntity = departmentDao.selectById(departmentId);
-        if (departmentEntity == null) {
-            return ResponseDTO.userErrorParam("部门不存在");
-        }
-
-        EmployeeEntity existEntity = employeeDao.getByLoginName(employeeUpdateForm.getLoginName(), null);
-        if (null != existEntity && !Objects.equals(existEntity.getEmployeeId(), employeeId)) {
+    public ResponseDTO<Long> addCuser(EmployeeUpdateForm employeeAddForm, RegisterForm registerForm) {
+        EmployeeEntity employeeEntity = employeeDao.getByLoginName(employeeAddForm.getLoginName(), null);
+        if (null != employeeEntity) {
             return ResponseDTO.userErrorParam("登录名重复");
         }
-
-        existEntity = employeeDao.getByPhone(employeeUpdateForm.getPhone(), null);
-        if (null != existEntity && !Objects.equals(existEntity.getEmployeeId(), employeeId)) {
-            return ResponseDTO.userErrorParam("手机号已存在");
-        }
-
-        existEntity = employeeDao.getByActualName(employeeUpdateForm.getActualName(), null);
-        if (null != existEntity && !Objects.equals(existEntity.getEmployeeId(), employeeId)) {
+        // 校验姓名是否重复
+        employeeEntity = employeeDao.getByActualName(employeeAddForm.getActualName(), null);
+        if (null != employeeEntity) {
             return ResponseDTO.userErrorParam("姓名重复");
         }
-
-        // 不更新密码
-        EmployeeEntity entity = SmartBeanUtil.copy(employeeUpdateForm, EmployeeEntity.class);
-        entity.setLoginPwd(registerForm.getPassword());
-        // 更新数据
-        employeeManager.updateEmployee(entity, employeeUpdateForm.getRoleIdList());
-        return ResponseDTO.ok();
+        // 校验电话是否存在
+        employeeEntity = employeeDao.getByPhone(employeeAddForm.getPhone(), null);
+        if (null != employeeEntity) {
+            return ResponseDTO.userErrorParam("手机号已存在");
+        }
+        // 部门是否存在
+        Long departmentId = employeeAddForm.getDepartmentId();
+        DepartmentEntity department = departmentDao.selectById(departmentId);
+        if (department == null) {
+            return ResponseDTO.userErrorParam("部门不存在");
+        }
+        EmployeeEntity entity = SmartBeanUtil.copy(employeeAddForm, EmployeeEntity.class);
+        // 设置密码 默认密码
+        entity.setLoginPwd(getEncryptPwd(registerForm.getPassword()));
+        // 保存数据
+        entity.setDeletedFlag(Boolean.FALSE);
+        employeeManager.saveEmployee(entity, employeeAddForm.getRoleIdList());
+        return ResponseDTO.ok(entity.getEmployeeId());
     }
 }

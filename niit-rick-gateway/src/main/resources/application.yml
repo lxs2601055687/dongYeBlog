@@ -40,8 +40,8 @@ spring:
           uri: lb://niit-rick-lottery
           predicates:
             - Path=/lottery/**
-          filters:
-            - AuthenticationFilter
+          #filters:
+          #  - AuthenticationFilter
         - id: niit-rick-admin # 路由id，自定义，只要唯一即可
           uri: lb://niit-rick-admin
           predicates:

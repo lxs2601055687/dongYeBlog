@@ -1,5 +1,6 @@
 package cn.bitoffer.lottery.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ public class TUser implements Serializable {
     /**
      * 自增主键
      */
-
+    @TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
     private Integer id;
 
     /**

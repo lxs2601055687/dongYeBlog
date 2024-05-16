@@ -26,8 +26,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableScheduling
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
-@ComponentScan(AdminApplication.COMPONENT_SCAN)
-@MapperScan(value = AdminApplication.COMPONENT_SCAN, annotationClass = Mapper.class)
+@ComponentScan({AdminApplication.COMPONENT_SCAN})
+@MapperScan(value = {AdminApplication.COMPONENT_SCAN, "cn.bitoffer"}, annotationClass = Mapper.class)
 @SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
 @EnableDiscoveryClient
 @EnableFeignClients

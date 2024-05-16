@@ -1,5 +1,6 @@
 package cn.bitoffer.lottery.service;
 
+import cn.bitoffer.api.dto.lottery.UserInfoParam;
 import cn.bitoffer.lottery.dto.UserInfoReq;
 import cn.bitoffer.lottery.model.TUser;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -12,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface TUserService extends IService<TUser> {
 
-    Integer updateOrInsertUserInfo(UserInfoReq userInfoReq);
+    Integer updateOrInsertUserInfo(UserInfoParam userInfoReq);
 }

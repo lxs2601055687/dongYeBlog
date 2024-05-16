@@ -13,7 +13,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 import java.util.List;
 
-@Component
+
 @Slf4j
 public class ContextFeignInterceptor implements RequestInterceptor {
 

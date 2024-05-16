@@ -10,6 +10,7 @@ import net.lab1024.sa.admin.module.system.login.domain.LoginForm;
 import net.lab1024.sa.admin.module.system.login.VO.LoginResultVO;
 import net.lab1024.sa.admin.module.system.login.domain.RegisterForm;
 import net.lab1024.sa.admin.module.system.login.service.LoginService;
+import net.lab1024.sa.admin.module.system.login.service.RegisterService;
 import net.lab1024.sa.admin.util.AdminRequestUtil;
 import net.lab1024.sa.base.common.annoation.NoNeedLogin;
 import net.lab1024.sa.base.common.constant.RequestHeaderConst;
@@ -39,6 +40,8 @@ public class LoginController {
     @Resource
     private LoginService loginService;
 
+    @Resource
+    private RegisterService registerService;
     @NoNeedLogin
     @PostMapping("/login")
     @Operation(summary = "登录 @author 卓大")
@@ -76,9 +79,9 @@ public class LoginController {
     @Operation(summary = "注册用户 @author 李祥生")
     @PostMapping("/register")
     @NoNeedLogin
-    public ResponseDTO<LoginResultVO> register(@Valid @RequestBody RegisterForm registerForm, HttpServletRequest request) {
+    public ResponseDTO<LoginResultVO> register(@RequestBody RegisterForm registerForm, HttpServletRequest request) {
         String ip = ServletUtil.getClientIP(request);
         String userAgent = ServletUtil.getHeaderIgnoreCase(request, RequestHeaderConst.USER_AGENT);
-        return loginService.register(registerForm, ip, userAgent);
+        return registerService.register(registerForm, ip, userAgent);
     }
 }

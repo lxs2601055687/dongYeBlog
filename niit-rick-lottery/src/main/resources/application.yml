@@ -50,7 +50,7 @@ logging:
     root: WARN
     cn:
       bitoffer:
-        lottery: ERROR
+        lottery: INFO
 
 #  kafka:
 #    #以逗号分隔的主机：端口对列表，用于建立与Kafka的连接

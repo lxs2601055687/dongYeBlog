@@ -148,3 +148,8 @@ sa-token:
   is-print: false
   # 是否从cookie读取token
   is-read-cookie: false
+feign:
+  client:
+    config:
+      default: # 这里用default就是全局配置，如果是写服务名称，则是针对某个微服务的配置
+        loggerLevel: FULL # 日志级别,NONE，BASIC，HEADERS,FULL
