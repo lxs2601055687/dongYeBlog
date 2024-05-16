@@ -82,6 +82,7 @@ public class LoginController {
     public ResponseDTO<LoginResultVO> register(@RequestBody RegisterForm registerForm, HttpServletRequest request) {
         String ip = ServletUtil.getClientIP(request);
         String userAgent = ServletUtil.getHeaderIgnoreCase(request, RequestHeaderConst.USER_AGENT);
+        //新注册的用户直接返回loginVo对象，不需要二次登录
         return registerService.register(registerForm, ip, userAgent);
     }
 }

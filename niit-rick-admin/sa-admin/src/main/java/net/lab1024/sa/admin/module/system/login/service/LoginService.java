@@ -216,6 +216,39 @@ public class LoginService implements StpInterface {
         return ResponseDTO.ok(loginResultVO);
     }
 
+    /**
+     * 注册用户第一次登录
+     */
+
+    public ResponseDTO<LoginResultVO> cUserlogin(LoginForm loginForm, String ip, String userAgent) {
+        EmployeeEntity employeeEntity = employeeService.getByLoginName(loginForm.getLoginName());
+        if (null == employeeEntity) {
+            return ResponseDTO.userErrorParam("登录名不存在！");
+        }
+        // 验证账号状态
+        if (employeeEntity.getDisabledFlag()) {
+            saveLoginLog(employeeEntity, ip, userAgent, "账号已禁用", LoginLogResultEnum.LOGIN_FAIL);
+            return ResponseDTO.userErrorParam("您的账号已被禁用,请联系工作人员！");
+        }
+        String saTokenLoginId = UserTypeEnum.ADMIN_EMPLOYEE.getValue() + StringConst.COLON + employeeEntity.getEmployeeId();
+        // 登录
+        StpUtil.login(saTokenLoginId, String.valueOf("电脑端"));
+        // 获取员工信息
+        RequestEmployee requestEmployee = loadLoginInfo(employeeEntity);
+        // 放入缓存
+        loginEmployeeCache.put(employeeEntity.getEmployeeId(), requestEmployee);
+        // 移除登录失败
+        protectLoginService.removeLoginFail(employeeEntity.getEmployeeId(), UserTypeEnum.ADMIN_EMPLOYEE);
+        // 获取登录结果信息
+        LoginResultVO loginResultVO = getLoginResult(requestEmployee);
+        // 设置 token
+        loginResultVO.setToken(StpUtil.getTokenValue());
+
+        // 清除权限缓存
+        permissionCache.remove(employeeEntity.getEmployeeId());
+
+        return ResponseDTO.ok(loginResultVO);
+    }
 
     /**
      * 获取登录结果信息

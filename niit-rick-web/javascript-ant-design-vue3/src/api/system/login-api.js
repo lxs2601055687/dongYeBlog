@@ -41,5 +41,9 @@ export const loginApi = {
 
   getVisitorLoginInfo() {
     return getRequest(prefix+'/login/getVisitorLoginInfo');
+  },
+
+  register(param) {
+    return postRequest(prefix+'/register', param)
   }
 };
