@@ -9,30 +9,19 @@
   *
 -->
 <template>
-  <default-home-card icon="SmileOutlined" title="联系我们">
+  <default-home-card icon="SmileOutlined" title="博客点赞榜">
     <div class="app-qr-box">
-      <div class="app-qr">
-        <img :src="zhuoda" />
-        <span class="qr-desc strong"> 卓大的微信号！ </span>
-        <span class="qr-desc"> 骚扰卓大 :) </span>
-      </div>
-      <div class="app-qr">
-        <img :src="xiaozhen" />
-        <span class="qr-desc strong"> 六边形工程师 </span>
-        <span class="qr-desc"> 赚钱、代码、生活 </span>
-      </div>
+
     </div>
   </default-home-card>
 </template>
 <script setup>
   import DefaultHomeCard from '/@/views/system/home/components/default-home-card.vue';
-  import zhuoda from '/@/assets/images/1024lab/zhuoda-wechat.jpg';
-  import xiaozhen from '/@/assets/images/1024lab/gzh.jpg';
 </script>
 <style lang="less" scoped>
   .app-qr-box {
     display: flex;
-    height: 150px;
+    height: 300px;
     align-items: center;
     justify-content: space-around;
     .app-qr {

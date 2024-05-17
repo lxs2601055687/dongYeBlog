@@ -10,6 +10,7 @@
 import menu from './system/menu-const';
 import goods from './business/erp/goods-const';
 import category from './business/erp/category-const';
+import encryptPasswordForm from './system/visitor-loginInfo-const.js'
 import { LOGIN_DEVICE_ENUM } from './system/login-device-const';
 import { FLAG_NUMBER_ENUM, GENDER_ENUM, USER_TYPE_ENUM } from './common-const';
 import { LAYOUT_ENUM } from './layout-const';
@@ -26,6 +27,7 @@ export default {
   GENDER_ENUM,
   USER_TYPE_ENUM,
   LAYOUT_ENUM,
+  encryptPasswordForm,
   ...loginLog,
   ...menu,
   ...goods,

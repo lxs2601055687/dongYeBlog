@@ -34,10 +34,15 @@ spring:
 #      pool:
 #        max-active: 8 #最大连接数
   jackson:
-    # 使用jackson进行json序列化时，可以将下划线的传参设置给驼峰的非简单对象成员上；并返回下划线格式的json串
-    # 特别注意。使用这种方式的时候，要求不能有自定义的WebMvcConfigurationSupport，因为会覆盖默认的处理方式
-    # 解决办法就是 拿到ObjectMapper的bean对象，手动塞入进去
-    property-naming-strategy: SNAKE_CASE
+    serialization:
+      write-enums-using-to-string: true
+      write-dates-as-timestamps: false
+    deserialization:
+      read-enums-using-to-string: true
+      fail-on-unknown-properties: false
+    default-property-inclusion: always
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

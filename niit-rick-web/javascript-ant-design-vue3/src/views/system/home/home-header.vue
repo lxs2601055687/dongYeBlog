@@ -12,7 +12,9 @@
   <div class="user-header">
     <a-page-header :title="welcomeSentence">
       <template #subTitle>
-        <span style="color: #666; margin-left: 20px">所属部门：{{ departmentName }} </span>
+<!--        <span style="color: #2e80a0; margin-left: 20px">
+        <a-button type="link">我要水帖</a-button>
+        </span>-->
       </template>
       <template #extra>
         <p style="color: #333">{{ dayInfo }}</p>

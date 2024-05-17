@@ -4,6 +4,8 @@ import cn.bitoffer.lottery.common.ErrorCode;
 import cn.bitoffer.lottery.controller.ViewPrize;
 import cn.bitoffer.lottery.mapper.*;
 import cn.bitoffer.lottery.model.*;
+import cn.bitoffer.lottery.prize.dao.PrizeDao;
+import cn.bitoffer.lottery.prize.domain.entity.PrizeEntity;
 import cn.bitoffer.lottery.service.LotteryService;
 import cn.bitoffer.lottery.constant.Constants;
 import cn.bitoffer.lottery.redis.RedisUtil;
@@ -37,7 +39,7 @@ public class LotteryServiceImpl1 implements LotteryService {
     protected LotteryTimesMapper lotteryTimesMapper;
 
     @Autowired
-    protected PrizeMapper prizeMapper;
+    protected PrizeDao prizeDao;
 
     @Autowired
     protected CouponMapper couponMapper;
@@ -154,8 +156,8 @@ public class LotteryServiceImpl1 implements LotteryService {
 
     public ArrayList<LotteryPrizeInfo> getAllUsefulPrizes(Date now) {
         ArrayList<LotteryPrizeInfo> lotteryPrizeInfoList = new ArrayList<LotteryPrizeInfo>();
-        ArrayList<Prize> prizeList = prizeMapper.getAllUsefulPrizeList(now);
-        for (Prize prize : prizeList) {
+        ArrayList<PrizeEntity> prizeList = prizeDao.getAllUsefulPrizeList(now);
+        for (PrizeEntity prize : prizeList) {
             String[] codes = prize.getPrizeCode().split("-");
             if (codes.length == 2) {
                 String codeA = codes[0];
@@ -195,7 +197,7 @@ public class LotteryServiceImpl1 implements LotteryService {
 
     // 发放奖品
     public boolean giveOutPrize(Long prizeId) {
-        int ret = prizeMapper.decrLeftNum(prizeId,1);
+        int ret = prizeDao.decrLeftNum(prizeId,1);
         if (ret <= 0){
             return false;
         }
@@ -351,9 +353,9 @@ public class LotteryServiceImpl1 implements LotteryService {
 
     public void addPrizeList(List<ViewPrize> viewPrizeList){
         Date now = new Date();
-        ArrayList<Prize> prizeList = new ArrayList<>();
+        ArrayList<PrizeEntity> prizeList = new ArrayList<>();
         for(ViewPrize viewPrize : viewPrizeList) {
-            Prize prize = new Prize();
+            PrizeEntity prize = new PrizeEntity();
             prize.setTitle(viewPrize.getTitle());
             prize.setPrizeNum(viewPrize.getPrizeNum());
             prize.setLeftNum(viewPrize.getPrizeNum());
@@ -370,7 +372,7 @@ public class LotteryServiceImpl1 implements LotteryService {
             prize.setSysUpdated(now);
             prizeList.add(prize);
         }
-        prizeMapper.saveInBatches(prizeList);
+        prizeDao.saveInBatches(prizeList);
     }
 
  }

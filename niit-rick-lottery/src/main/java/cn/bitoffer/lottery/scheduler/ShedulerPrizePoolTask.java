@@ -2,8 +2,8 @@ package cn.bitoffer.lottery.scheduler;
 
 import cn.bitoffer.lottery.cache.CacheMgr;
 import cn.bitoffer.lottery.constant.Constants;
-import cn.bitoffer.lottery.mapper.PrizeMapper;
-import cn.bitoffer.lottery.model.Prize;
+import cn.bitoffer.lottery.prize.dao.PrizeDao;
+import cn.bitoffer.lottery.prize.domain.entity.PrizeEntity;
 import cn.bitoffer.lottery.service.impl.LotteryServiceImpl3;
 import com.alibaba.fastjson.JSONArray;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class ShedulerPrizePoolTask {
     @Autowired
     private CacheMgr cacheMgr;
     @Autowired
-    private PrizeMapper prizeMapper;
+    private PrizeDao prizeDao;
     @Autowired
     private LotteryServiceImpl3 lotteryServiceImpl3;
 
@@ -43,13 +43,13 @@ public class ShedulerPrizePoolTask {
     public void fillPrizePool() throws ParseException {
         log.info("Resetting prize pool!!!!!");
         int totalNum = 0;
-        ArrayList<Prize> prizeList = prizeMapper.getAll();
+        ArrayList<PrizeEntity> prizeList = prizeDao.getAll();
         if (prizeList == null || prizeList.isEmpty()){
             return;
         }
         Date now = new Date();
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for(Prize prize : prizeList){
+        for(PrizeEntity prize : prizeList){
             // sys_status = 1 表示有效
             if(prize.getSysStatus() != 1){
                 continue;

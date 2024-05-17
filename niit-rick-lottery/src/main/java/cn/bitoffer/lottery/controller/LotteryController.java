@@ -97,7 +97,7 @@ public class LotteryController {
     // 新增奖品列表
     @PostMapping(value = "/add_prize_list", consumes = "application/json; charset=utf-8")
     public ResponseEntity<String> addPrizeList(@RequestBody AddPrizeListReq req) {
-        Long userId = new Long(req.getUserId());
+        Long userId = (long) req.getUserId();
         if (userId <= 0) {
             return ResponseEntity.fail();
         }

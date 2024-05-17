@@ -6,12 +6,14 @@ import cn.bitoffer.lottery.model.CheckResult;
 import cn.bitoffer.lottery.model.LotteryPrizeInfo;
 import cn.bitoffer.lottery.model.LotteryResult;
 import cn.bitoffer.lottery.model.LotteryUserInfo;
+import cn.bitoffer.lottery.prize.dao.PrizeDao;
 import cn.bitoffer.lottery.service.LotteryService;
 import cn.bitoffer.lottery.utils.UtilTools;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -20,6 +22,11 @@ import java.util.Date;
 @Service
 @Slf4j
 public class LotteryServiceImpl3 extends LotteryServiceImpl2 implements LotteryService {
+
+
+    @Autowired
+    private PrizeDao prizeDao;
+
     public LotteryResult lottery(Long userID, String userName, String ip) throws ParseException {
         LotteryResult lotteryResult = new LotteryResult();
         lotteryResult.setUserId(userID);
@@ -148,14 +155,14 @@ public class LotteryServiceImpl3 extends LotteryServiceImpl2 implements LotteryS
         // 清空缓存
         cacheMgr.updatePrizeByCache(prizeId);
         // 将db里对应奖品的prize_plan修改为空
-        prizeMapper.updatePrizePlan(prizeId,prizePlan);
+        prizeDao.updatePrizePlan(prizeId,prizePlan);
     }
 
     public void updatePrizePlanAndTimeWithCache(Long prizeId, String prizePlan, Date prizeBegin, Date prizeEnd) {
         // 清空缓存
         cacheMgr.updatePrizeByCache(prizeId);
         // 将db里对应奖品的prize_plan修改为空
-        prizeMapper.updatePrizePlanWithTime(prizeId,prizePlan,prizeBegin,prizeEnd);
+        prizeDao.updatePrizePlanWithTime(prizeId,prizePlan,prizeBegin,prizeEnd);
     }
 }
 

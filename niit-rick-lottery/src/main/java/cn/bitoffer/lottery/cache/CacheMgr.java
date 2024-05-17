@@ -5,6 +5,7 @@ import cn.bitoffer.lottery.model.BlackIp;
 import cn.bitoffer.lottery.model.BlackUser;
 import cn.bitoffer.lottery.model.Coupon;
 import cn.bitoffer.lottery.model.Prize;
+import cn.bitoffer.lottery.prize.domain.entity.PrizeEntity;
 import cn.bitoffer.lottery.redis.RedisUtil;
 import com.alibaba.fastjson.JSONArray;
 import lombok.extern.slf4j.Slf4j;
@@ -135,18 +136,18 @@ public class CacheMgr {
         }
     }
 
-    public ArrayList<Prize> getAllPrizesByCache() throws ParseException {
+    public ArrayList<PrizeEntity> getAllPrizesByCache() throws ParseException {
         Object obj = redisUtil.get(Constants.allPrizeCacheKey);
         if (obj == null) {
             return null;
         }
         String valueStr = obj.toString();
-        ArrayList<Prize> prizeList = new ArrayList<Prize>();
+        ArrayList<PrizeEntity> prizeList = new ArrayList<PrizeEntity>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         List<Map<String,String>> valueMapLsit = (List<Map<String,String>>) JSONArray.parse(valueStr);
         for(Map<String,String> valueMap : valueMapLsit) {
-            Prize prize = new Prize();
+            PrizeEntity prize = new PrizeEntity();
             prize.setId(Long.parseLong(valueMap.get("Id")));
             prize.setTitle(valueMap.get("Title").toString());
             prize.setPrizeNum(Integer.parseInt(valueMap.get("PrizeNum")));
@@ -170,13 +171,13 @@ public class CacheMgr {
         return prizeList;
     }
 
-    public void setAllPrizesByCache(ArrayList<Prize> prizeList) {
+    public void setAllPrizesByCache(ArrayList<PrizeEntity> prizeList) {
         if (prizeList == null || prizeList.isEmpty()) {
             return;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ArrayList<Map<String,String>> prizeMapList = new ArrayList<Map<String,String>>();
-        for (Prize prize : prizeList) {
+        for (PrizeEntity prize : prizeList) {
             Map<String,String> prizeMap = new HashMap<String,String>();
             prizeMap.put("Id",prize.getId().toString());
             prizeMap.put("Title",prize.getTitle());

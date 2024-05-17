@@ -4,10 +4,13 @@ import cn.bitoffer.lottery.cache.CacheMgr;
 import cn.bitoffer.lottery.common.ErrorCode;
 import cn.bitoffer.lottery.constant.Constants;
 import cn.bitoffer.lottery.model.*;
+import cn.bitoffer.lottery.prize.dao.PrizeDao;
+import cn.bitoffer.lottery.prize.domain.entity.PrizeEntity;
 import cn.bitoffer.lottery.service.LotteryService;
 import cn.bitoffer.lottery.utils.UtilTools;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.Strings;
+import org.checkerframework.checker.units.qual.A;
 import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,9 @@ public class LotteryServiceImpl2 extends LotteryServiceImpl1 implements LotteryS
 
     @Autowired
     protected CacheMgr cacheMgr;
+
+    @Autowired
+    private PrizeDao prizeDao;
     public LotteryResult lottery(Long userID, String userName, String ip) throws ParseException {
         LotteryResult lotteryResult = new LotteryResult();
         lotteryResult.setUserId(userID);
@@ -247,12 +253,12 @@ public class LotteryServiceImpl2 extends LotteryServiceImpl1 implements LotteryS
     }
 
     public ArrayList<LotteryPrizeInfo> getAllUsefulPrizesWithCache(Date now) throws ParseException {
-        ArrayList<Prize> prizeList = getAllUsefulPrizeListWithCache(now);
+        ArrayList<PrizeEntity> prizeList = getAllUsefulPrizeListWithCache(now);
         if (prizeList == null || prizeList.isEmpty()) {
             return null;
         }
         ArrayList<LotteryPrizeInfo> lotteryPrizeInfoList = new ArrayList<LotteryPrizeInfo>();
-        for (Prize prize : prizeList){
+        for (PrizeEntity prize : prizeList){
             String[] codes = prize.getPrizeCode().split("-");
             if (codes.length == 2) {
                 String codeA = codes[0];
@@ -278,10 +284,10 @@ public class LotteryServiceImpl2 extends LotteryServiceImpl1 implements LotteryS
         return lotteryPrizeInfoList;
     }
 
-    public ArrayList<Prize> getAllUsefulPrizeListWithCache(Date now) throws ParseException {
-        ArrayList<Prize> prizeList = getAllPrizeListWithCache();
-        ArrayList<Prize> usefulPrizeList = new ArrayList<Prize>();
-        for (Prize prize : prizeList) {
+    public ArrayList<PrizeEntity> getAllUsefulPrizeListWithCache(Date now) throws ParseException {
+        ArrayList<PrizeEntity> prizeList = getAllPrizeListWithCache();
+        ArrayList<PrizeEntity> usefulPrizeList = new ArrayList<PrizeEntity>();
+        for (PrizeEntity prize : prizeList) {
             if (prize.getId() > 0 && prize.getSysStatus() == 1 && prize.getPrizeNum() > 0 &&
             prize.getPrizeBegin().before(now) && prize.getEndTime().after(now)) {
                 usefulPrizeList.add(prize);
@@ -291,11 +297,11 @@ public class LotteryServiceImpl2 extends LotteryServiceImpl1 implements LotteryS
     }
 
 
-    public ArrayList<Prize> getAllPrizeListWithCache() throws ParseException {
-        ArrayList<Prize> prizeList = cacheMgr.getAllPrizesByCache();
+    public ArrayList<PrizeEntity> getAllPrizeListWithCache() throws ParseException {
+        ArrayList<PrizeEntity> prizeList = cacheMgr.getAllPrizesByCache();
         if (prizeList == null || prizeList.isEmpty()) {
             // 缓存没查到，从db获取
-            prizeList = prizeMapper.getAll();
+            prizeList = prizeDao.getAll();
             // 从db获取到数据
             cacheMgr.setAllPrizesByCache(prizeList);
         }
@@ -303,7 +309,7 @@ public class LotteryServiceImpl2 extends LotteryServiceImpl1 implements LotteryS
     }
 
     public boolean giveOutPrizeWithCache(Long prizeId) {
-        int ret = prizeMapper.decrLeftNum(prizeId,1);
+        int ret = prizeDao.decrLeftNum(prizeId,1);
         if (ret <= 0){
             return false;
         }
@@ -322,9 +328,9 @@ public class LotteryServiceImpl2 extends LotteryServiceImpl1 implements LotteryS
         return code;
     }
 
-    public Prize getPrizeWithCache(Long prizeId) throws ParseException {
-        ArrayList<Prize> prizeList = getAllPrizeListWithCache();
-        for(Prize prize: prizeList){
+    public PrizeEntity getPrizeWithCache(Long prizeId) throws ParseException {
+        ArrayList<PrizeEntity> prizeList = getAllPrizeListWithCache();
+        for(PrizeEntity prize: prizeList){
             if (prize.getId().equals(prizeId)) {
                 return prize;
             }
@@ -336,7 +342,7 @@ public class LotteryServiceImpl2 extends LotteryServiceImpl1 implements LotteryS
         if(prizeId <= 0){
             return;
         }
-        Prize prize = getPrizeWithCache(prizeId);
+        PrizeEntity prize = getPrizeWithCache(prizeId);
         if (prize == null || prize.getPrizeType() != Constants.prizeTypeCouponDiff) {
             log.info("invalid prize type: {} or id: {}",prize.getPrizeType(),prizeId);
             return;

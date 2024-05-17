@@ -1,5 +1,6 @@
 package net.lab1024.sa.base.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -25,11 +26,13 @@ public class PageParam {
 
     @Schema(description = "页码(不能为空)", example = "1")
     @NotNull(message = "分页参数不能为空")
+    @JsonProperty("pageNum")
     private Long pageNum;
 
     @Schema(description = "每页数量(不能为空)", example = "10")
     @NotNull(message = "每页数量不能为空")
     @Max(value = 500, message = "每页最大为500")
+    @JsonProperty("pageSize")
     private Long pageSize;
 
     @Schema(description = "是否查询总条数")

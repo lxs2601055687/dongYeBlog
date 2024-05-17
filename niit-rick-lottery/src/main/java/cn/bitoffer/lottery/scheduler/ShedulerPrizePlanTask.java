@@ -2,8 +2,10 @@ package cn.bitoffer.lottery.scheduler;
 
 import cn.bitoffer.lottery.cache.CacheMgr;
 import cn.bitoffer.lottery.constant.Constants;
-import cn.bitoffer.lottery.mapper.PrizeMapper;
+
 import cn.bitoffer.lottery.model.Prize;
+import cn.bitoffer.lottery.prize.dao.PrizeDao;
+import cn.bitoffer.lottery.prize.domain.entity.PrizeEntity;
 import cn.bitoffer.lottery.service.impl.LotteryServiceImpl2;
 import cn.bitoffer.lottery.service.impl.LotteryServiceImpl3;
 import cn.bitoffer.lottery.utils.UtilTools;
@@ -30,7 +32,7 @@ public class ShedulerPrizePlanTask {
     @Autowired
     private CacheMgr cacheMgr;
     @Autowired
-    private PrizeMapper prizeMapper;
+    private PrizeDao prizeDao;
     @Autowired
     private LotteryServiceImpl3 lotteryServiceImpl3;
 
@@ -65,9 +67,11 @@ public class ShedulerPrizePlanTask {
     @Scheduled(fixedDelay = 300000)
     public void resetAllPrizePlan() throws ParseException {
         log.info("Resetting all prizes!!!!!");
-        ArrayList<Prize> prizeList = prizeMapper.getAll();
+        ArrayList<PrizeEntity> prizeList = prizeDao.getAll();
         Date now = new Date();
-        for(Prize prize : prizeList) {
+        for(PrizeEntity prize : prizeList) {
+            System.out.println(prize.getPrizeTime());
+            System.out.println(prize.getPrizePlan());
             if(prize.getPrizeTime() > 0 && (prize.getPrizePlan().isEmpty() || prize.getPrizeEnd().before(now))) {
                 // ResetPrizePlan只会更新db的数据
                 resetPrizePlan(prize);
@@ -77,7 +81,7 @@ public class ShedulerPrizePlanTask {
         }
     }
 
-    public void resetPrizePlan(Prize prize) {
+    public void resetPrizePlan(PrizeEntity prize) {
         if (prize == null || prize.getId() < 1) {
             return;
         }
@@ -108,7 +112,7 @@ public class ShedulerPrizePlanTask {
         int avgPrizeNum = prizeNum / prizePlanDays;
         // 每天可以分配到的奖品数量
         Map<Integer, Integer> dayPrizeNumMap = new HashMap<Integer, Integer>();
-        // 发奖周期大雨1天，并且平均每天发的奖品书大于等于1
+        // 发奖周期大于1天，并且平均每天发的奖品数大于等于1
         if (prizePlanDays > 0 && avgPrizeNum >= 1) {
             for(int day = 0; day < prizePlanDays; day++) {
                 dayPrizeNumMap.put(day,avgPrizeNum);

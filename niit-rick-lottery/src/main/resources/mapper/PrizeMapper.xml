@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.bitoffer.lottery.mapper.PrizeMapper">
-    <resultMap id="prizeMap" type="cn.bitoffer.lottery.model.Prize">
+<mapper namespace="cn.bitoffer.lottery.prize.dao.PrizeDao">
+    <resultMap id="prizeMap" type="cn.bitoffer.lottery.prize.domain.entity.PrizeEntity">
         <result column="id" property="id"/>
         <result column="title" property="title"/>
         <result column="prize_num" property="prizeNum"/>
@@ -92,4 +92,30 @@
     <update id="decrLeftNum">
         update t_prize set left_num = left_num-1,sys_updated= now() where id = #{id} and left_num &gt;= #{num};
     </update>
+
+    <select id="queryPage" resultType="cn.bitoffer.lottery.prize.domain.vo.PrizeVO">
+        SELECT
+        *
+        FROM t_prize
+        <where>
+            <!--奖品名称-->
+            <if test="queryForm.title != null and queryForm.title != ''">
+                AND INSTR(t_prize.title,#{queryForm.title})
+            </if>
+            <!--奖品有效周期：开始时间-->
+            <if test="queryForm.beginTimeBegin != null">
+                AND DATE_FORMAT(t_prize.begin_time, '%Y-%m-%d') &gt;= #{queryForm.beginTimeBegin}
+            </if>
+            <if test="queryForm.beginTimeEnd != null">
+                AND DATE_FORMAT(t_prize.begin_time, '%Y-%m-%d') &lt;= #{queryForm.beginTimeEnd}
+            </if>
+            <!--奖品有效周期：结束时间-->
+            <if test="queryForm.endTimeBegin != null">
+                AND DATE_FORMAT(t_prize.end_time, '%Y-%m-%d') &gt;= #{queryForm.endTimeBegin}
+            </if>
+            <if test="queryForm.endTimeEnd != null">
+                AND DATE_FORMAT(t_prize.end_time, '%Y-%m-%d') &lt;= #{queryForm.endTimeEnd}
+            </if>
+        </where>
+    </select>
 </mapper>

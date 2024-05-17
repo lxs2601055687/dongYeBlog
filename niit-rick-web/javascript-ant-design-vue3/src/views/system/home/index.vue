@@ -25,13 +25,13 @@
         </a-col>
         <!--企业动态-->
         <a-col :span="12">
-          <HomeNotice title="通知" :noticeTypeId="2" />
+          <HomeNotice title="最新" :noticeTypeId="2" />
         </a-col>
         <!--各类报表-->
         <!-- <a-col :span="6">
           <Gauge :percent="saleTargetPercent" />
         </a-col> -->
-        <a-col :span="12">
+<!--        <a-col :span="12">
           <Pie />
         </a-col>
         <a-col :span="12">
@@ -39,16 +39,16 @@
         </a-col>
         <a-col :span="24">
           <Gradient />
-        </a-col>
+        </a-col>-->
       </a-row>
     </a-col>
     <!--右侧-->
     <a-col :span="8">
       <a-row :gutter="[10, 10]">
-        <!--快捷入口-->
-        <!-- <a-col :span="24">
+
+        <a-col :span="24">
           <HomeQuickEntry />
-        </a-col> -->
+        </a-col>
         <!--关注公众号-->
         <a-col :span="24">
           <OfficialAccountCard />
