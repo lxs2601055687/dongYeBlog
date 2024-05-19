@@ -135,6 +135,7 @@ public class LotteryServiceImpl2 extends LotteryServiceImpl1 implements LotteryS
     }
 
     public boolean checkUserDayLotteryTimesWithCache(Long userId){
+        // 先从缓存中获取用户当天的抽奖次数
         int userLotteryNum = cacheMgr.incrUserDayLotteryNum(userId);
         log.info("checkUserDayLotteryTimesWithCache|uid={}|userLotteryNum={}", userId, userLotteryNum);
         if (userLotteryNum > Constants.userPrizeMax) {

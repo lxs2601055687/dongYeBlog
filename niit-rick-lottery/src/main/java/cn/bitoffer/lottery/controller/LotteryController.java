@@ -10,10 +10,12 @@ import cn.bitoffer.lottery.service.LotteryService;
 import cn.bitoffer.lottery.service.impl.LotteryServiceImpl1;
 import cn.bitoffer.lottery.service.impl.LotteryServiceImpl2;
 import cn.bitoffer.lottery.service.impl.LotteryServiceImpl3;
+import cn.hutool.extra.servlet.ServletUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.List;
 
@@ -74,18 +76,13 @@ public class LotteryController {
     }
 
     @PostMapping(value = "/v3/get_lucky", consumes = "application/json; charset=utf-8")
-    public ResponseEntity<LotteryResult> lotteryV3(@RequestHeader("X-User-Id") Long tokenUserID,@RequestBody LotteryReq req) {
+    public ResponseEntity<LotteryResult> lotteryV3(@RequestBody LotteryReq req, HttpServletRequest request) {
+        String ip = ServletUtil.getClientIP(request);
         LotteryResult lotteryResult = null;
         try {
-            Long userID = null;
-            if (tokenUserID != null) {
-                userID = tokenUserID;
-            }else {
-                userID = new Long(req.getUserId());
-            }
+             int userID = req.getUserId();
             String userName = req.getUserName();
-            String ip = req.getIp();
-            lotteryResult = lotteryServiceImpl3.lottery(userID, userName, ip);
+            lotteryResult =  lotteryServiceImpl3.lottery((long) userID, userName, ip);
 
         } catch (Exception e) {
             System.out.println("lottery err " + e.getMessage());

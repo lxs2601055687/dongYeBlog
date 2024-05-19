@@ -41,7 +41,7 @@ public class ShedulerPrizePoolTask {
     @Async
     @Scheduled(initialDelay = 2000,fixedDelay = 60000)  // 第一次延迟1秒后执行,之后在上一次执行完毕时间点之后1min秒再执行
     public void fillPrizePool() throws ParseException {
-        log.info("Resetting prize pool!!!!!");
+        log.info("更新奖品池");
         int totalNum = 0;
         ArrayList<PrizeEntity> prizeList = prizeDao.getAll();
         if (prizeList == null || prizeList.isEmpty()){

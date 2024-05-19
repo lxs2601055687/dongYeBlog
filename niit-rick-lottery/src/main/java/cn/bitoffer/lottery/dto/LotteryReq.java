@@ -1,8 +1,13 @@
 package cn.bitoffer.lottery.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public  class LotteryReq{
+    @JsonProperty("userId")
     int userId;
+    @JsonProperty("userName")
     String userName;
+    @JsonProperty("ip")
     String ip;
 
     public int getUserId() {

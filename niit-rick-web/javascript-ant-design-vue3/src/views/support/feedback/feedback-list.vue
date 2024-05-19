@@ -1,166 +1,240 @@
 <!--
   * 意见反馈
   * 
-  * @Author:    1024创新实验室：开云
-  * @Date:      2022-07-21 21:55:12
-  * @Wechat:    zhuda1024 
-  * @Email:     lab1024@163.com 
-  * @Copyright  1024创新实验室 （ https://1024lab.net ），Since 2012 
+  * @Author:    李祥生
+  * @Date:      2024-05-21 21:55:12
+  * @Wechat:    lxsdsg123
+  * @Email:    2601055687@qq.com
+  * @Copyright
 -->
 <template>
-  <a-form class="smart-query-form">
-    <a-row class="smart-query-form-row">
-      <a-form-item label="关键字" class="smart-query-form-item" style="margin-right: 20px">
-        <a-input style="width: 240px" v-model:value.trim="queryForm.searchWord" placeholder="反馈内容/创建人" />
-      </a-form-item>
-      <a-form-item label="创建日期" class="smart-query-form-item" style="margin-right: 20px">
-        <a-range-picker
-          v-model:value="chooseTimeRange"
-          @change="changeCreateDate"
-          :presets="defaultTimeRanges"
-          format="YYYY-MM-DD"
-          style="width: 240px"
-        />
-      </a-form-item>
-      <a-form-item class="smart-query-form-item">
-        <a-button-group v-privilege="'feedback:query'">
-          <a-button type="primary" @click="onSearch">
-            <template #icon>
-              <SearchOutlined />
-            </template>
-            查询
-          </a-button>
-          <a-button @click="onReset">
-            <template #icon>
-              <ReloadOutlined />
-            </template>
-            重置
-          </a-button>
-        </a-button-group>
-      </a-form-item>
-    </a-row>
-  </a-form>
-
-  <a-card size="small">
-    <a-table rowKey="feedbackId" :dataSource="tableData" :columns="tableColumns" :pagination="false" :loading="tableLoading" size="small" bordered>
-      <template #bodyCell="{ text, column }">
-        <template v-if="column.dataIndex === 'feedbackAttachment'">
-          <FilePreview :fileList="text" type="picture" />
-        </template>
-        <template v-if="column.dataIndex === 'userType'">
-          <span>{{ $smartEnumPlugin.getDescByValue('USER_TYPE_ENUM', text) }}</span>
-        </template>
-      </template>
-    </a-table>
-
-    <div class="smart-query-table-page">
-      <a-pagination
-        showSizeChanger
-        showQuickJumper
-        show-less-items
-        :pageSizeOptions="PAGE_SIZE_OPTIONS"
-        :defaultPageSize="queryForm.pageSize"
-        v-model:current="queryForm.pageNum"
-        v-model:pageSize="queryForm.pageSize"
-        :total="total"
-        @change="queryList"
-        @showSizeChange="queryList"
-        :show-total="(total) => `共${total}条`"
-      />
+  <h1 class="title">点击start，开始抽奖</h1>
+  <section class="container" id="js-lotto">
+    <div class="square" data-order="0">
+      <div class="square__content">🙈</div>
     </div>
-  </a-card>
+    <div class="square" data-order="1">
+      <div class="square__content">🤢</div>
+    </div>
+    <div class="square" data-order="2">
+      <div class="square__content">💩</div>
+    </div>
+    <div class="square" data-order="7">
+      <div class="square__content">🤖</div>
+    </div>
+    <div class="square square__start-btn" id="js-start">
+      <div>START</div>
+    </div>
+    <div class="square" data-order="3">
+      <div class="square__content">🦊</div>
+    </div>
+    <div class="square" data-order="6">
+      <div class="square__content">👻</div>
+    </div>
+    <div class="square" data-order="5">
+      <div class="square__content">👾</div>
+    </div>
+    <div class="square" data-order="4">
+      <div class="square__content">👀</div>
+    </div>
+  </section>
 </template>
 
 <script setup>
   import { onMounted, reactive, ref } from 'vue';
-  import { PAGE_SIZE, PAGE_SIZE_OPTIONS } from '/@/constants/common-const';
-  import { defaultTimeRanges } from '/@/lib/default-time-ranges';
-  import { feedbackApi } from '/@/api/support/feedback-api';
-  import FilePreview from '/@/components/support/file-preview/index.vue';
-  import { smartSentry } from '/@/lib/smart-sentry';
+  import {prizeApi} from "/@/api/business/lottery/prize-api.js";
+  import axios from "axios";
+  import {useUserStore} from "/@/store/modules/system/user.js";
 
-  // ----------------------- 表格列 --------------------------------------
-  const tableColumns = reactive([
-    {
-      title: '编号',
-      dataIndex: 'feedbackId',
-      width: 80,
-    },
-    {
-      title: '反馈内容',
-      dataIndex: 'feedbackContent',
-    },
-    {
-      title: '反馈图片',
-      dataIndex: 'feedbackAttachment',
-    },
-    {
-      title: '反馈人',
-      dataIndex: 'userName',
-      width: 100,
-    },
-    {
-      title: '反馈人类型',
-      dataIndex: 'userType',
-      width: 100,
-    },
-    {
-      title: '反馈时间',
-      dataIndex: 'createTime',
-      width: 150,
-    },
-  ]);
+    const prizes = {
+      0: '🙈',
+      1: '🤢',
+      2: '💩',
+      3: '🦊',
+      4: '👀',
+      5: '👾',
+      6: '👻',
+      7: '🤖',
+    };
+    const totalItems = 8;
+    const minimumJumps = 30; // 超過這數字開始進入抽獎
+    const currentIndex = ref(-1);
+    const jumps = ref(0);
+    const speed = ref(30);
+    const timer = ref(0);
+    const prize = ref(-1);
 
-  // ----------------------- 查询参数 ------------------------------------
-  const defaultQueryForm = {
-    startDate: undefined,
-    endDate: undefined,
-    searchWord: undefined,
-    pageNum: 1,
-    pageSize: PAGE_SIZE,
-  };
-  const queryForm = reactive({ ...defaultQueryForm });
-  const tableLoading = ref(false);
-  const tableData = ref([]);
-  const total = ref(0);
+    const runCircle = () => {
+      if (currentIndex.value >= 0) {
+        document.querySelector(`[data-order="${currentIndex.value}"]`).classList.remove('is-active');
+      }
 
-  onMounted(() => {
-    queryList();
-  });
+      currentIndex.value += 1;
 
-  async function queryList() {
+      if (currentIndex.value > totalItems - 1) {
+        currentIndex.value = 0;
+      }
+
+      document.querySelector(`[data-order="${currentIndex.value}"]`).classList.add('is-active');
+    };
+
+    const generatePrizeNumber = () => {
+      return Math.floor(Math.random() * totalItems);
+    };
+
+    const controllSpeed = () => {
+      jumps.value += 1;
+      runCircle();
+
+      // 1. 抽到獎品停止遊戲
+      if (jumps.value > minimumJumps + 10 && prize.value === currentIndex.value) {
+        clearTimeout(timer.value);
+        console.log(result.data.errcode)
+        if(result.data.errcode === "SUCCESS"){
+          swal({
+            title: `You Have Won a Prize ${prizes[currentIndex.value] + result.data.lotteryPrize.title}`,
+            text: 'Congratulations!',
+            icon: 'success',
+            content: {
+              element: "img",
+              attributes: {
+                src: result.data.lotteryPrize.img,
+                alt: result.data.lotteryPrize.title,
+                style: "width: 100px; height: 100px;" // 可以根据需要调整图片大小
+              },
+            },
+          });
+        } else {
+          swal({
+            title: `You Don't Have Won a Prize `,
+            text: 'Congratulations!',
+            icon: 'error',
+          });
+        }
+
+
+
+        prize.value = -1;
+        jumps.value = 0;
+      } else {
+        // 還沒進入關鍵抽獎階段前的速度 (前菜轉特效)
+        if (jumps.value < minimumJumps) {
+          speed.value -= 5; // 加快
+        } else if (jumps.value === minimumJumps) {
+          const randomNumber = generatePrizeNumber();
+          prize.value = randomNumber;
+        } else {
+          // 下一個就是獎品時放慢鈍一下
+          if (jumps.value > minimumJumps + 10 && prize.value === (currentIndex.value + 1)) {
+            speed.value += 600;
+          } else {
+            speed.value += 20; // 減速
+          }
+        }
+
+        if (speed.value < 40) {
+          speed.value = 40;
+        }
+
+        timer.value = setTimeout(controllSpeed, speed.value);
+      }
+    };
+  async function getClientIp() {
     try {
-      tableLoading.value = true;
-      const result = await feedbackApi.queryFeedback(queryForm);
-      tableData.value = result.data.list;
-      total.value = result.data.total;
-    } catch (e) {
-      smartSentry.captureError(e);
-    } finally {
-      tableLoading.value = false;
+      const response = await axios.get('http://localhost:3000/get-ip');
+      console.log('Client IP:', response.data.ip);
+      return response.data.ip;
+    } catch (error) {
+      console.error('Error fetching IP address:', error);
+      return null;
     }
   }
+  let result  =new reactive({});
+    const init = async () => {
+      jumps.value = 0;
+      speed.value = 100;
+      prize.value = -1;
+     /* const clientIp = await getClientIp();*/
 
-  // 处理选择日期范围
-  const chooseTimeRange = ref([]);
+      const param = {
+        userId: useUserStore().employeeId,
+        ip: 1324,
+        userName: useUserStore().loginName
+      }
+       result = await prizeApi.getLucky(param)
+      console.log(result)
+      controllSpeed();
+    };
 
-  function changeCreateDate(value, dateString) {
-    queryForm.startDate = dateString[0];
-    queryForm.endDate = dateString[1];
-  }
+    onMounted(() => {
+      document.querySelector('#js-start').addEventListener('click', init);
+    });
 
-  // 点击查询
-  function onSearch() {
-    queryForm.pageNum = 1;
-    queryList();
-  }
 
-  // 点击重置
-  function onReset() {
-    Object.assign(queryForm, defaultQueryForm);
-    chooseTimeRange.value = [];
-    queryList();
-  }
 
-  // ----------------------- 分页方法 ------------------------------------
 </script>
+<style lang="less" scoped>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Do Hyeon', sans-serif;
+  background: #7049f7;
+}
+
+.title {
+  text-align: center;
+  margin: 1.2em 0;
+  font-size: 2em;
+  color: #426edc;
+  text-transform: uppercase;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 620px;
+  margin: 20px auto;
+}
+
+.square {
+  border: 1px solid lightpink;
+  flex: 0 0 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background: #426edc;
+
+  &.square:not(:nth-child(3n)) {
+    margin-right: 10px;
+}
+
+  &.square:not(:nth-child(n+7)) {
+    margin-bottom: 10px;
+}
+
+  &.is-active {
+    border: 20px solid gold;
+}
+}
+
+.square__content {
+  font-size: 2.8em;
+}
+
+.square__start-btn {
+  background: gold;
+  color: #e97573;
+  font-size: 2em;
+  cursor: pointer;
+
+  &:hover {
+    background: lighten(gold, 25%);
+}
+}
+
+</style>

@@ -46,5 +46,11 @@ export const prizeApi = {
   batchDelete: (idList) => {
       return postRequest(prefix+'/prize/batchDelete', idList);
   },
+  /**
+   * 抽奖接口 @author 李祥生
+   */
+  getLucky:(param) => {
+    return postRequest(prefix+'/v3/get_lucky',param)
 
+}
 };

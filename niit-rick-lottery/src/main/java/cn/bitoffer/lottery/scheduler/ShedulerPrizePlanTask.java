@@ -1,9 +1,5 @@
 package cn.bitoffer.lottery.scheduler;
-
 import cn.bitoffer.lottery.cache.CacheMgr;
-import cn.bitoffer.lottery.constant.Constants;
-
-import cn.bitoffer.lottery.model.Prize;
 import cn.bitoffer.lottery.prize.dao.PrizeDao;
 import cn.bitoffer.lottery.prize.domain.entity.PrizeEntity;
 import cn.bitoffer.lottery.service.impl.LotteryServiceImpl2;
@@ -17,9 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Async;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-
-
-import javax.annotation.PostConstruct;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,14 +59,13 @@ public class ShedulerPrizePlanTask {
     @Async
     @Scheduled(fixedDelay = 300000)
     public void resetAllPrizePlan() throws ParseException {
-        log.info("Resetting all prizes!!!!!");
+        log.info("奖品发奖计划定时任务");
         ArrayList<PrizeEntity> prizeList = prizeDao.getAll();
         Date now = new Date();
         for(PrizeEntity prize : prizeList) {
-            System.out.println(prize.getPrizeTime());
-            System.out.println(prize.getPrizePlan());
             if(prize.getPrizeTime() > 0 && (prize.getPrizePlan().isEmpty() || prize.getPrizeEnd().before(now))) {
                 // ResetPrizePlan只会更新db的数据
+                log.info("奖品发奖计划被重新设置");
                 resetPrizePlan(prize);
                 // 因为上面resetPrizePlan会把缓存中的奖品数据清空，所以这里用一个缓存读取，将数据加载到缓存
                 lotteryServiceImpl3.getAllUsefulPrizesWithCache(now);
@@ -147,6 +139,7 @@ public class ShedulerPrizePlanTask {
         calendar.setTime(now);
         calendar.add(Calendar.DATE, prizePlanDays); // 当前时间黑名单限制之后的截止时间
         // 更新发奖计划，以及计划的开始时间和结束时间，注意这里会把缓存中的奖品数据清空
+        log.info("prize_id = {}\nplanList = {}\nnow = {}\nendTime = {}", prize.getId(), planListStr, now, calendar.getTime());
         lotteryServiceImpl3.updatePrizePlanAndTimeWithCache(prize.getId(),planListStr,now,calendar.getTime());
     }
 
