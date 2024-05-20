@@ -1,5 +1,11 @@
 package cn.bitoffer.lottery.prize.service;
 
+import cn.bitoffer.lottery.mapper.LotteryTimesMapper;
+import cn.bitoffer.lottery.mapper.ResultMapper;
+import cn.bitoffer.lottery.model.LotteryResult;
+import cn.bitoffer.lottery.model.LotteryTimes;
+import cn.bitoffer.lottery.model.Prize;
+import cn.bitoffer.lottery.model.Result;
 import cn.bitoffer.lottery.prize.dao.PrizeDao;
 import cn.bitoffer.lottery.prize.domain.entity.PrizeEntity;
 import cn.bitoffer.lottery.prize.domain.form.PrizeAddForm;
@@ -7,6 +13,8 @@ import cn.bitoffer.lottery.prize.domain.form.PrizeQueryForm;
 import cn.bitoffer.lottery.prize.domain.form.PrizeUpdateForm;
 import cn.bitoffer.lottery.prize.domain.vo.PrizeVO;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import net.lab1024.sa.base.common.util.SmartBeanUtil;
@@ -32,6 +40,11 @@ public class PrizeService {
 
     @Resource
     private PrizeDao prizeDao;
+    @Resource
+    private LotteryTimesMapper lotteryTimesMapper;
+
+    @Resource
+    private ResultMapper resultMapper;
 
     /**
      * 分页查询
@@ -98,5 +111,29 @@ public class PrizeService {
 
         prizeDao.deleteById(id);
         return ResponseDTO.ok();
+    }
+
+    public ResponseDTO<Integer> getLuckyCount(Long userId) {
+        //20240520格式构建时间参数
+        LocalDate currentDate = LocalDate.now();
+
+        // 定义格式化器，格式为 "MMdd"
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        // 将当前日期格式化为 "MMdd"
+        String monthDay = currentDate.format(formatter);
+        LotteryTimes byUserIDAndDay = lotteryTimesMapper.getByUserIDAndDay(userId, Long.valueOf(monthDay));
+        if (byUserIDAndDay != null) {
+            return ResponseDTO.ok(byUserIDAndDay.getNum());
+        }
+        return ResponseDTO.ok(0);
+    }
+
+    public ResponseDTO<List<Result>> getLuckyResult(Long valueOf) {
+        return ResponseDTO.ok(resultMapper.selectByIdAndNowTime(valueOf));
+    }
+
+    public ResponseDTO<List<PrizeEntity>> getAllPrize() {
+        return ResponseDTO.ok(prizeDao.getAll());
     }
 }

@@ -38,4 +38,7 @@
     <delete id="deleteAll">
         delete from t_result;
     </delete>
+    <select id="selectByIdAndNowTime" resultType="cn.bitoffer.lottery.model.Result">
+        select * from t_result where user_id = #{userId};
+    </select>
 </mapper>

@@ -8,36 +8,72 @@
   * @Copyright
 -->
 <template>
-  <h1 class="title">点击start，开始抽奖</h1>
-  <section class="container" id="js-lotto">
-    <div class="square" data-order="0">
-      <div class="square__content">🙈</div>
-    </div>
-    <div class="square" data-order="1">
-      <div class="square__content">🤢</div>
-    </div>
-    <div class="square" data-order="2">
-      <div class="square__content">💩</div>
-    </div>
-    <div class="square" data-order="7">
-      <div class="square__content">🤖</div>
-    </div>
-    <div class="square square__start-btn" id="js-start">
-      <div>START</div>
-    </div>
-    <div class="square" data-order="3">
-      <div class="square__content">🦊</div>
-    </div>
-    <div class="square" data-order="6">
-      <div class="square__content">👻</div>
-    </div>
-    <div class="square" data-order="5">
-      <div class="square__content">👾</div>
-    </div>
-    <div class="square" data-order="4">
-      <div class="square__content">👀</div>
-    </div>
-  </section>
+  <a-row>
+    <a-col :span="12">
+    <h1 class="title">点击start，开始抽奖</h1>
+      <h4 class="title">您今天已经抽: <b>{{ num }}</b> 次奖！每天可抽 20 次</h4>
+    <section class="container" id="js-lotto">
+      <div class="square" data-order="0">
+        <div class="square__content">🙈</div>
+      </div>
+      <div class="square" data-order="1">
+        <div class="square__content">🤢</div>
+      </div>
+      <div class="square" data-order="2">
+        <div class="square__content">💩</div>
+      </div>
+      <div class="square" data-order="7">
+        <div class="square__content">🤖</div>
+      </div>
+      <div class="square square__start-btn" id="js-start">
+        <div>START</div>
+      </div>
+      <div class="square" data-order="3">
+        <div class="square__content">🦊</div>
+      </div>
+      <div class="square" data-order="6">
+        <div class="square__content">👻</div>
+      </div>
+      <div class="square" data-order="5">
+        <div class="square__content">👾</div>
+      </div>
+      <div class="square" data-order="4">
+        <div class="square__content">👀</div>
+      </div>
+    </section>
+    </a-col>
+    <a-col :span="12">
+      <a-row justify="center" style="margin-top: 100px">
+        <a-col style="width: 400px" :span="12">
+          <a-card>
+            <p style=" text-align: center; font-size: 26px; color: #426edc;">
+            获奖结果
+            </p>
+            <a-table
+                :columns="columns"
+                :data-source="prizeResult"
+                :pagination="false"
+                :rowKey="(record) => record.id"
+            />
+          </a-card>
+        </a-col>
+        <a-col style="width: 400px" :span="12">
+          <a-card>
+            <p style=" text-align: center; font-size: 26px; color: #426edc;">
+             奖品池
+            </p>
+            <a-table
+                :columns="columns2"
+                :data-source="prizeResult2"
+                :pagination="false"
+                :rowKey="(record) => record.id"
+            />
+          </a-card>
+        </a-col>
+      </a-row>
+    </a-col>
+  </a-row>
+
 </template>
 
 <script setup>
@@ -46,6 +82,42 @@
   import axios from "axios";
   import {useUserStore} from "/@/store/modules/system/user.js";
 
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      sorter: true,
+      width: '20%',
+    },
+    {
+      title: '奖品名称',
+      dataIndex: 'prizeName',
+      sorter: true,
+      width: '40%',
+    },
+    {
+      title: '中奖时间',
+      dataIndex: 'sysCreated',
+    },
+  ];
+  const columns2 = [
+      {
+        title: 'ID',
+        dataIndex: 'id',
+        sorter: true,
+        width: '20%',
+      },
+      {
+        title: '奖品名称',
+        dataIndex: 'title',
+        sorter: true,
+        width: '40%',
+      },
+      {
+        title: '剩余数量',
+        dataIndex: 'leftNum',
+      },
+  ]
     const prizes = {
       0: '🙈',
       1: '🤢',
@@ -151,11 +223,29 @@
   }
   let result  =new reactive({});
     const init = async () => {
+      //验证是否时游客，游客提示禁止抽奖
+      if (useUserStore().loginName === '游客') {
+        swal({
+          title: '游客登录，请先回到首页注册参与抽奖哦',
+          text: 'SB!',
+          icon: 'error',
+        });
+        return;
+      }
+      //前端验证次数
+      if (num.value >= 20) {
+        swal({
+          title: '您今天已经抽奖次数超过20次，请明天再来哦',
+          text: 'SB!',
+          icon: 'error',
+        });
+        return;
+      }
       jumps.value = 0;
       speed.value = 100;
       prize.value = -1;
      /* const clientIp = await getClientIp();*/
-
+      num.value = num.value + 1
       const param = {
         userId: useUserStore().employeeId,
         ip: 1324,
@@ -165,9 +255,37 @@
       console.log(result)
       controllSpeed();
     };
-
+  let num = ref(0)
+  function getPrizeCount(){
+    prizeApi.getLuckyCount(useUserStore().employeeId).then((res) => {
+      if (res.code === 0) {
+        num.value = res.data
+        console.log(num)
+      }
+    })
+  }
+  //拿到获奖结果
+  let prizeResult = ref([])
+  function getPrizeResult(){
+    prizeApi.getLuckyResult(useUserStore().employeeId).then((res) => {
+      if (res.code === 0) {
+        prizeResult.value  = res.data
+      }
+    })
+  }
+  let prizeResult2 = ref([])
+  function  getPrizes(){
+    prizeApi.getAllPrize().then((res) => {
+      if (res.code === 0) {
+        prizeResult2.value  = res.data
+      }
+    })
+  }
     onMounted(() => {
       document.querySelector('#js-start').addEventListener('click', init);
+      getPrizeResult();
+      getPrizeCount();
+      getPrizes();
     });
 
 
@@ -206,7 +324,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px;
+  height: 150px;
   background: #426edc;
 
   &.square:not(:nth-child(3n)) {
@@ -236,5 +354,22 @@ body {
     background: lighten(gold, 25%);
 }
 }
+a-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
+p {
+  font-size: 16px;
+  color: #595959;
+}
+
+b {
+  color: #1890ff; /* 重点内容颜色 */
+}
+
+a-table {
+  margin-top: 20px;
+}
 </style>

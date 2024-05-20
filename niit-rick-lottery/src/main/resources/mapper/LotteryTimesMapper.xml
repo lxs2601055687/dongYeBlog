@@ -23,6 +23,9 @@
     <select id="getByUserIDAndDay" resultMap="lotteryTimesMap">
         select * from t_lottery_times where `user_id`= #{userID} and `day` = #{day} limit 1;
     </select>
+    <select id="selectByIdAndNowTime" resultType="java.lang.Integer">
+          select num from t_lottery_times where id = #{id} and day = #{day};
+    </select>
 
 
     <insert id="save" useGeneratedKeys="true" keyProperty="lotteryTimes.id">

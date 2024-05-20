@@ -13,4 +13,5 @@ public interface LotteryTimesMapper {
     void update(@Param("lotteryTimes") LotteryTimes lotteryTimes);
 
 
+    Integer selectByIdAndNowTime(@Param("userId") Integer userId,@Param("nowTime") String nowTime);
 }

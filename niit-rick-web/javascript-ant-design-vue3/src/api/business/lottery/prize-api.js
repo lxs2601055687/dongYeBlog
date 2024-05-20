@@ -51,6 +51,23 @@ export const prizeApi = {
    */
   getLucky:(param) => {
     return postRequest(prefix+'/v3/get_lucky',param)
-
-}
+  },
+  /**
+   * 查询用户抽奖次数 @author 李祥生
+   */
+  getLuckyCount:(param) => {
+    return getRequest(prefix+'/prize/get_lucky_count/'+param)
+  },
+  /**
+   * 获奖结果 @author 李祥生
+   */
+  getLuckyResult:(param) => {
+  return getRequest(prefix+'/prize/get_lucky_result/'+param)
+},
+  /**
+   * 拿到全部奖品 @author 李祥生
+   */
+  getAllPrize:() => {
+    return getRequest(prefix+'/prize/get_all_prize')
+  }
 };

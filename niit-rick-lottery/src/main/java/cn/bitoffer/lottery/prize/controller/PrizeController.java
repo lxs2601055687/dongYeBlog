@@ -1,5 +1,8 @@
 package cn.bitoffer.lottery.prize.controller;
 
+import cn.bitoffer.lottery.model.LotteryResult;
+import cn.bitoffer.lottery.model.Result;
+import cn.bitoffer.lottery.prize.domain.entity.PrizeEntity;
 import cn.bitoffer.lottery.prize.domain.form.PrizeAddForm;
 import cn.bitoffer.lottery.prize.domain.form.PrizeQueryForm;
 import cn.bitoffer.lottery.prize.domain.form.PrizeUpdateForm;
@@ -14,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 奖品表 Controller
@@ -59,5 +63,21 @@ public class PrizeController {
     @GetMapping("/prize/delete/{id}")
     public ResponseDTO<String> batchDelete(@PathVariable Integer id) {
         return prizeService.delete(id);
+    }
+
+    @Operation(summary = "查询今天用户抽奖次数 @author 李祥生")
+    @GetMapping("/prize/get_lucky_count/{userId}")
+    public ResponseDTO<Integer> getLuckyCount(@PathVariable(value = "userId") Integer userId) {
+        return prizeService.getLuckyCount(Long.valueOf(userId));
+    }
+    @Operation(summary = "查询用户获奖结果 @author 李祥生")
+    @GetMapping("/prize/get_lucky_result/{userId}")
+    public ResponseDTO<List<Result>> getLuckyResult(@PathVariable(value = "userId") Integer userId) {
+        return prizeService.getLuckyResult(Long.valueOf(userId));
+    }
+    @Operation(summary = "查询全部奖品 @author 李祥生")
+    @GetMapping("/prize/get_all_prize")
+    public ResponseDTO<List<PrizeEntity>> getAllPrize() {
+        return prizeService.getAllPrize();
     }
 }
