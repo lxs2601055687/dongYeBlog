@@ -10,11 +10,18 @@
 import { resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
 import customVariables from '/@/theme/custom-variables.js';
-
+import { defineConfig } from 'vite';
+ defineConfig({
+  plugins: [vue()],
+  optimizeDeps: {
+    include: ['three', 'postprocessing', 'threejs-components'],
+  },
+});
 const pathResolve = (dir) => {
   return resolve(__dirname, '.', dir);
 };
 export default {
+  defineConfig,
   base: process.env.NODE_ENV === 'production' ? '/' : '/',
   root: process.cwd(),
   resolve: {

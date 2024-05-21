@@ -25,7 +25,7 @@
           <span>退出登录</span>
         </a-menu-item>
         <a-menu-item @click="onLoginAdmin">
-          <span>管理员登录</span>
+          <span>切换帐号</span>
         </a-menu-item>
       </a-menu>
     </template>
