@@ -19,6 +19,7 @@
         <module>niit-rick-seckill</module>
         <module>niit-rick-admin</module>
         <module>niit-rick-auth</module>
+        <module>niit-rick-blog</module>
     </modules>
 
 
