@@ -3,7 +3,7 @@ server:
   port: 8081
 spring:
   application:
-    name: @artifactId@
+    name: niit-rick-blog
   cloud:
     nacos:
       discovery:
@@ -12,13 +12,13 @@ spring:
         password: nacos
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/bitstorm-svr?serverTimezone=GMT%2B8&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/blog?serverTimezone=GMT%2B8&characterEncoding=utf8&useSSL=false
     username: root
-    password: root@2023
+    password: 161732z*
   redis:
     host: localhost
     port: 6379
-    password: root2023
+    password: 161732z
     database: 0
     jedis:
       pool:
@@ -50,3 +50,8 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+easy-es:
+  enable: true #默认为true,若为false则认为不启用本框架
+  address : 106.53.64.184:9200 # es的连接地址,必须含端口 若为集群,则可以用逗号隔开 例如:127.0.0.1:9200,127.0.0.2:9200
+  username: elastic #若无 则可省略此行配置
+  password: Elastic_f5F3ze #若无 则可省略此行配置
