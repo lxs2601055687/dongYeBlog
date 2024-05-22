@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bitoffer.improve.dao.ArticleDao">
+
+    <!-- 分页查询 -->
+    <select id="queryPage" resultType="cn.bitoffer.improve.domain.vo.ArticleVO">
+        SELECT
+        *
+        FROM article
+        <where>
+            <!--标题名-->
+            <if test="queryForm.articleTitle != null and queryForm.articleTitle != ''">
+                        AND INSTR(article.article_title,#{queryForm.articleTitle})
+            </if>
+            <!--创建时间-->
+            <if test="queryForm.createdTimeBegin != null">
+                AND DATE_FORMAT(article.created_time, '%Y-%m-%d') &gt;= #{queryForm.createdTimeBegin}
+            </if>
+            <if test="queryForm.createdTimeEnd != null">
+                AND DATE_FORMAT(article.created_time, '%Y-%m-%d') &lt;= #{queryForm.createdTimeEnd}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

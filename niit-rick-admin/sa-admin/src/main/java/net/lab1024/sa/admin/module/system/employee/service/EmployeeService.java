@@ -82,7 +82,6 @@ public class EmployeeService {
         if (employeeQueryForm.getDepartmentId() != null) {
             departmentIdList.addAll(departmentService.selfAndChildrenIdList(employeeQueryForm.getDepartmentId()));
         }
-
         List<EmployeeVO> employeeList = employeeDao.queryEmployee(pageParam, employeeQueryForm, departmentIdList);
         if (CollectionUtils.isEmpty(employeeList)) {
             PageResult<EmployeeVO> pageResult = SmartPageUtil.convert2PageResult(pageParam, employeeList);

@@ -48,6 +48,11 @@ spring:
             - Path=/admin/**
          # filters:
          #   - AuthenticationFilter
+        - id: niit-rick-blog
+          uri: lb://niit-rick-blog
+          predicates:
+            - Path=/blog/**
+
 
 
 

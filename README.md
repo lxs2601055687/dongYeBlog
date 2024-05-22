@@ -8,6 +8,12 @@
 
 
 技术栈
+
+前端
+Ant Design Vue：一个基于 Vue 的 UI 组件库。
+
+后端
+
 Spring Cloud：Spring 微服务全家桶。
 
 Spring Cloud Alibaba：致力于提供微服务开发的一站式解决方案。
@@ -16,17 +22,11 @@ Sentinel：把流量作为切入点，从流量控制、熔断降级、系统负
 
 Nacos：一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。
 
-Dubbo：Apache Dubbo™ 是一款高性能 Java RPC 框架。
-
-Cat：基于 Java 开发的实时应用监控平台，为美团点评提供了全面的实时监控告警服务。
-
 MyBatis-Plus：MyBatis的增强版。
 
-Spring Data MongoDB：Spring 中对MongoDB操作的客户端框架。
+Redission：基于Java的缓存系统封装，提供统一的API和注解来简化缓存的使用。
 
-JetCache：基于Java的缓存系统封装，提供统一的API和注解来简化缓存的使用。
-
-ElasticSearch：ElasticSearch 是一个开源，分布式，RESTful搜索引擎。
+ElasticSearch+Easy-es：ElasticSearch 是一个开源，分布式，RESTful搜索引擎。
 
 
 
@@ -37,3 +37,5 @@ ElasticSearch：ElasticSearch 是一个开源，分布式，RESTful搜索引擎�
 抽奖页面
 ![img_2.png](img_2.png)
 ![img_1.png](img_1.png)
+文章管理
+![img_3.png](img_3.png)
