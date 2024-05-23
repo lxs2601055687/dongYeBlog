@@ -4,6 +4,7 @@ import cn.bitoffer.improve.domain.form.ArticleAddForm;
 import cn.bitoffer.improve.domain.form.ArticleQueryForm;
 import cn.bitoffer.improve.domain.form.ArticleUpdateForm;
 import cn.bitoffer.improve.domain.vo.ArticleVO;
+import cn.bitoffer.improve.elsmapper.EsArticleMapper;
 import cn.bitoffer.improve.service.ArticleService;
 import net.lab1024.sa.base.common.domain.ValidateList;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,8 @@ public class ArticleController {
 
     @Resource
     private ArticleService articleService;
-
+    @Resource
+    private EsArticleMapper esArticleMapper;
     @Operation(summary = "分页查询 @author 李祥生")
     @PostMapping("/article/queryPage")
     public ResponseDTO<PageResult<ArticleVO>> queryPage(@RequestBody @Valid ArticleQueryForm queryForm) {
@@ -59,5 +61,10 @@ public class ArticleController {
     @GetMapping("/article/delete/{articleId}")
     public ResponseDTO<String> batchDelete(@PathVariable Integer articleId) {
         return articleService.delete(articleId);
+    }
+
+    @GetMapping("/article/es/index")
+    public Boolean esIndex() {
+        return esArticleMapper.createIndex();
     }
 }

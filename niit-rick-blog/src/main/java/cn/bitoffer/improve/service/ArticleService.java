@@ -7,12 +7,17 @@ import cn.bitoffer.improve.domain.form.ArticleQueryForm;
 import cn.bitoffer.improve.domain.form.ArticleUpdateForm;
 import cn.bitoffer.improve.domain.vo.ArticleVO;
 import java.util.List;
+
+import cn.bitoffer.improve.kafka.MessageService;
+import cn.bitoffer.improve.model.Article;
 import net.lab1024.sa.base.common.util.SmartBeanUtil;
 import net.lab1024.sa.base.common.util.SmartPageUtil;
 import net.lab1024.sa.base.common.domain.ResponseDTO;
 import net.lab1024.sa.base.common.domain.PageResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +36,10 @@ public class ArticleService {
     @Resource
     private ArticleDao articleDao;
 
+
+   @Autowired
+   private MessageService messageService;
+
     /**
      * 分页查询
      *
@@ -48,7 +57,9 @@ public class ArticleService {
      */
     public ResponseDTO<String> add(ArticleAddForm addForm) {
         ArticleEntity articleEntity = SmartBeanUtil.copy(addForm, ArticleEntity.class);
-        articleDao.insert(articleEntity);
+        //分别向两个kafka topic发送消息 mysql和es 消费者消费消息写入数据
+        messageService.sendMysqlAddMessage(articleEntity);
+        messageService.sendEsAddMessage(articleEntity);
         return ResponseDTO.ok();
     }
 

@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import lombok.Data;
+import org.dromara.easyes.annotation.*;
+import org.dromara.easyes.annotation.rely.Analyzer;
+import org.dromara.easyes.annotation.rely.FieldType;
 
 /**
  * 文章管理 实体类
@@ -16,12 +19,14 @@ import lombok.Data;
 
 @Data
 @TableName("article")
+@IndexName("article")
 public class ArticleEntity {
 
     /**
      * 文章id
      */
     @TableId(type = IdType.AUTO)
+    @IndexId(type = org.dromara.easyes.annotation.rely.IdType.CUSTOMIZE)
     private Integer articleId;
 
     /**
@@ -37,6 +42,9 @@ public class ArticleEntity {
     /**
      * 文章内容
      */
+    @MultiIndexField(mainIndexField = @IndexField(fieldType = FieldType.KEYWORD),
+            otherIndexFields = {@InnerIndexField(suffix = "zh", fieldType = FieldType.TEXT, analyzer = Analyzer.IK_SMART),
+                    @InnerIndexField(suffix = "pinyin", fieldType = FieldType.TEXT, analyzer = Analyzer.PINYIN)})
     private String articleContent;
 
     /**
@@ -57,16 +65,19 @@ public class ArticleEntity {
     /**
      * 创建时间
      */
+    @IndexField(fieldType = FieldType.DATE, dateFormat = "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")
     private LocalDateTime createdTime;
 
     /**
      * 修改时间
      */
+    @IndexField(fieldType = FieldType.DATE, dateFormat = "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis")
     private LocalDateTime updateTime;
 
     /**
      * 逻辑删除
      */
+    @IndexField(exist = false)
     private Integer isDeleted;
 
     /**
