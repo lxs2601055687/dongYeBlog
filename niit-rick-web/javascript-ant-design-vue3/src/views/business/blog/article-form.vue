@@ -16,25 +16,27 @@
   >
     <a-form ref="formRef" :model="form" :rules="rules" :label-col="{ span: 5 }" >
           <a-row>
-                    <a-form-item label="文章id"  name="articleId">
-                      <a-input-number style="width: 100%" v-model:value="form.articleId" placeholder="文章id" />
-                    </a-form-item>
                     <a-form-item label="文章标题"  name="articleTitle">
                       <a-input style="width: 100%" v-model:value="form.articleTitle" placeholder="文章标题" />
                     </a-form-item>
-                    <a-form-item label="文章浏览量"  name="articleViewCount">
+                    <a-form-item label="浏览量"  name="articleViewCount">
                       <a-input-number style="width: 100%" v-model:value="form.articleViewCount" placeholder="文章浏览量" />
                     </a-form-item>
-                    <a-form-item label="文章点赞量"  name="articleLikeCount">
+                    <a-form-item label="点赞量"  name="articleLikeCount">
                       <a-input-number style="width: 100%" v-model:value="form.articleLikeCount" placeholder="文章点赞量" />
                     </a-form-item>
-                    <a-form-item label="文章评论数量"  name="articleCommentCount">
+                    <a-form-item label="评论数量"  name="articleCommentCount">
                       <a-input-number style="width: 100%" v-model:value="form.articleCommentCount" placeholder="文章评论数量" />
                     </a-form-item>
-                    <a-form-item label="分类表中对应category_name"  name="articleCategoryName">
+                    <a-form-item label="分类名称"  name="articleCategoryName">
                       <a-input style="width: 100%" v-model:value="form.articleCategoryName" placeholder="分类表中对应category_name" />
                     </a-form-item>
           </a-row>
+      <a-row>
+        <a-form-item label="文章内容"  name="articleContent">
+       <aieditor></aieditor>
+        </a-form-item>
+      </a-row>
 
     </a-form>
 
@@ -53,6 +55,8 @@
   import { SmartLoading } from '/@/components/framework/smart-loading';
   import { articleApi } from '/@/api/business/blog/article-api.js';
   import { smartSentry } from '/@/lib/smart-sentry';
+  import aieditor from './companent/aieditor.vue';
+  import Aieditor from "/@/views/business/blog/companent/aieditor.vue";
 
   // ------------------------ 事件 ------------------------
 

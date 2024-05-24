@@ -31,7 +31,7 @@ ElasticSearch+Easy-es：ElasticSearch 是一个开源，分布式，RESTful搜�
 
 
 库主的个人博客: niit.skylm.cn
-
+目前实现的功能
 奖品管理
 ![img.png](img.png)
 抽奖页面
@@ -39,3 +39,5 @@ ElasticSearch+Easy-es：ElasticSearch 是一个开源，分布式，RESTful搜�
 ![img_1.png](img_1.png)
 文章管理
 ![img_3.png](img_3.png)
+引入科大讯飞的大模型进行ai续写
+![img_4.png](img_4.png)
