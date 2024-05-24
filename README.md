@@ -11,10 +11,10 @@
 
 前端
 Ant Design Vue：一个基于 Vue 的 UI 组件库。
+aiEditor：一键引入ai编辑器。支持科大讯飞星火模型。
 
 后端
 
-Spring Cloud：Spring 微服务全家桶。
 
 Spring Cloud Alibaba：致力于提供微服务开发的一站式解决方案。
 
@@ -26,8 +26,9 @@ MyBatis-Plus：MyBatis的增强版。
 
 Redission：基于Java的缓存系统封装，提供统一的API和注解来简化缓存的使用。
 
-ElasticSearch+Easy-es：ElasticSearch 是一个开源，分布式，RESTful搜索引擎。
+ElasticSearch+Easy-es：分布式搜索引擎+傻瓜式api操作。
 
+kafka：分布式流处理平台。
 
 
 库主的个人博客: niit.skylm.cn
