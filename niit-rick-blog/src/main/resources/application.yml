@@ -36,14 +36,18 @@ spring:
       # 键的序列化方式
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       # 值的序列化方式
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       acks: 1
     consumer:
       # 键的反序列化方式
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       # 值的反序列化方式
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: cn.bitoffer.improve.domain.entity
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   #开启驼峰命名

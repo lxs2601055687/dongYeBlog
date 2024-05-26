@@ -9,7 +9,7 @@ public enum ResponseEnum {
     SHOW_FAIL(1, ""),
     ;
     private final int code;
-    private final String message;
+    private String message;
 
     ResponseEnum(int code, String message) {
         this.code = code;
@@ -22,5 +22,12 @@ public enum ResponseEnum {
 
     public String message() {
         return message;
+    }
+    // 添加一个方法来设置 SHOW_FAIL 的消息
+    public ResponseEnum setMessage(String message) {
+        if (this == SHOW_FAIL) {
+            this.message = message;
+        }
+        return this;
     }
 }

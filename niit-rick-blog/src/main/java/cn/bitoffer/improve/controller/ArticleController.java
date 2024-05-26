@@ -65,6 +65,7 @@ public class ArticleController {
 
     @GetMapping("/article/es/index")
     public Boolean esIndex() {
+        esArticleMapper.deleteIndex("article");
         return esArticleMapper.createIndex();
     }
 }

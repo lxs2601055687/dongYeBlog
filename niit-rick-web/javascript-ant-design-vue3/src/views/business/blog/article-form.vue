@@ -6,47 +6,59 @@
   * @Copyright  niit-阿升
 -->
 <template>
-  <a-modal
-      :title="form.articleId ? '编辑' : '添加'"
-      width="1000"
-      :open="visibleFlag"
-      @cancel="onClose"
-      :maskClosable="false"
-      :destroyOnClose="true"
-  >
-    <a-form ref="formRef" :model="form" :rules="rules" :label-col="{ span: 5 }" >
-          <a-row>
-                    <a-form-item label="文章标题"  name="articleTitle">
-                      <a-input style="width: 100%" v-model:value="form.articleTitle" placeholder="文章标题" />
-                    </a-form-item>
-                    <a-form-item label="浏览量"  name="articleViewCount">
-                      <a-input-number style="width: 100%" v-model:value="form.articleViewCount" placeholder="文章浏览量" />
-                    </a-form-item>
-                    <a-form-item label="点赞量"  name="articleLikeCount">
-                      <a-input-number style="width: 100%" v-model:value="form.articleLikeCount" placeholder="文章点赞量" />
-                    </a-form-item>
-                    <a-form-item label="评论数量"  name="articleCommentCount">
-                      <a-input-number style="width: 100%" v-model:value="form.articleCommentCount" placeholder="文章评论数量" />
-                    </a-form-item>
-                    <a-form-item label="分类名称"  name="articleCategoryName">
-                      <a-input style="width: 100%" v-model:value="form.articleCategoryName" placeholder="分类表中对应category_name" />
-                    </a-form-item>
-          </a-row>
-      <a-row>
-        <a-form-item label="文章内容"  name="articleContent">
-       <aieditor></aieditor>
-        </a-form-item>
-      </a-row>
+    <a-modal
+        :title="form.articleId ? '编辑' : '添加'"
+        width="1000"
+        :open="visibleFlag"
+        @cancel="onClose"
+        :maskClosable="false"
+        :destroyOnClose="true"
+    >
+      <a-form ref="formRef" :model="form" :rules="rules" :label-col="{ span: 5 }">
+        <a-row :gutter="16">
+          <a-col :span="6">
+            <a-form-item label="文章标题" name="articleTitle">
+              <a-input v-model:value="form.articleTitle" placeholder="文章标题" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="6">
+            <a-form-item label="浏览量" name="articleViewCount">
+              <a-input-number v-model:value="form.articleViewCount" style="width: 100%;" placeholder="文章浏览量" />
+            </a-form-item>
+          </a-col>
 
-    </a-form>
+          <a-col :span="6">
+            <a-form-item label="点赞量" name="articleLikeCount">
+              <a-input-number v-model:value="form.articleLikeCount" style="width: 100%;" placeholder="文章点赞量" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="6">
+            <a-form-item label="评论数量" name="articleCommentCount">
+              <a-input-number v-model:value="form.articleCommentCount" style="width: 100%;" placeholder="文章评论数量" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="6">
+            <a-form-item label="分类名称" name="articleCategoryName">
+              <a-input v-model:value="form.articleCategoryName" placeholder="分类" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="16">
+          <a-col :span="24">
+            <a-form-item name="articleContent">
+              <Aieditor @updateContent="handleUpdateContent" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
 
-    <template #footer>
-      <a-space>
-        <a-button @click="onClose">取消</a-button>
-        <a-button type="primary" @click="onSubmit">保存</a-button>
-      </a-space>
-    </template>
-  </a-modal>
+      <template #footer>
+        <a-space>
+          <a-button @click="onClose">取消</a-button>
+          <a-button type="primary" @click="onSubmit">保存</a-button>
+        </a-space>
+      </template>
+    </a-modal>
 </template>
 <script setup>
   import { reactive, ref, nextTick } from 'vue';
@@ -55,9 +67,13 @@
   import { SmartLoading } from '/@/components/framework/smart-loading';
   import { articleApi } from '/@/api/business/blog/article-api.js';
   import { smartSentry } from '/@/lib/smart-sentry';
-  import aieditor from './companent/aieditor.vue';
-  import Aieditor from "/@/views/business/blog/companent/aieditor.vue";
 
+  import Aieditor from "/@/views/business/blog/companent/aieditor.vue";
+  const editorContent = ref('');
+
+  function handleUpdateContent(html) {
+    editorContent.value = html;
+  }
   // ------------------------ 事件 ------------------------
 
   const emits = defineEmits(['reloadList']);
@@ -112,7 +128,7 @@
   async function onSubmit() {
     try {
       await formRef.value.validateFields();
-      save();
+      await save();
     } catch (err) {
       message.error('参数验证错误，请仔细填写表单数据!');
     }
@@ -125,6 +141,7 @@
       if (form.articleId) {
         await articleApi.update(form);
       } else {
+        form.articleContent = editorContent;
         await articleApi.add(form);
       }
       message.success('操作成功');
@@ -141,3 +158,13 @@
     show,
   });
 </script>
+<style>
+a-form-item {
+  margin-bottom: 16px;
+}
+
+a-modal .ant-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

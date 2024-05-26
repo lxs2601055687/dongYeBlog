@@ -7,6 +7,7 @@ import cn.bitoffer.improve.domain.form.ArticleQueryForm;
 import cn.bitoffer.improve.domain.form.ArticleUpdateForm;
 import cn.bitoffer.improve.domain.vo.ArticleVO;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import cn.bitoffer.improve.kafka.MessageService;
 import cn.bitoffer.improve.model.Article;
@@ -58,8 +59,7 @@ public class ArticleService {
     public ResponseDTO<String> add(ArticleAddForm addForm) {
         ArticleEntity articleEntity = SmartBeanUtil.copy(addForm, ArticleEntity.class);
         //分别向两个kafka topic发送消息 mysql和es 消费者消费消息写入数据
-        messageService.sendMysqlAddMessage(articleEntity);
-        messageService.sendEsAddMessage(articleEntity);
+        messageService.sendDataAddMessage(articleEntity);
         return ResponseDTO.ok();
     }
 

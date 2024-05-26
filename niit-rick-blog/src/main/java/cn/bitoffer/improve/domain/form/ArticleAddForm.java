@@ -41,7 +41,6 @@ public class ArticleAddForm {
     private Integer articleCategoryId;
 
     @Schema(description = "外键，对应user_id", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "外键，对应user_id 不能为空")
     private String articleUserId;
 
     @Schema(description = "分类表中对应category_name", requiredMode = Schema.RequiredMode.REQUIRED)

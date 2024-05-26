@@ -8,6 +8,7 @@ public enum ErrorCode {
     SUCCESS(0, "ok"),
     PARAMS_ERROR(40000, "请求参数错误"),
     SYSTEM_ERROR(50000, "系统内部异常"),
+    MESSAGE_SEND_ERROR(50001, "消息发送失败"),
     ;
 
 

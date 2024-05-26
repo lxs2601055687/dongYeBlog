@@ -26,9 +26,11 @@ public class ArticleEntity {
      * 文章id
      */
     @TableId(type = IdType.AUTO)
-    @IndexId(type = org.dromara.easyes.annotation.rely.IdType.CUSTOMIZE)
     private Integer articleId;
 
+
+    @IndexId
+    private String id;
     /**
      * 文章标题
      */
