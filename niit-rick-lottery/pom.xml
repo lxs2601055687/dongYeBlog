@@ -119,6 +119,11 @@
             <version>2.13.3</version>
         </dependency>
         <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
+            <version>1.38.0</version>
+        </dependency>
+        <dependency>
             <groupId>net.1024lab</groupId>
             <artifactId>sa-base</artifactId>
             <version>3.0.0</version>

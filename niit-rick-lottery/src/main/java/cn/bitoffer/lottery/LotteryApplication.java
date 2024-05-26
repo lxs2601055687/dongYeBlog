@@ -1,3 +1,4 @@
+
 package cn.bitoffer.lottery;
 
 import org.springframework.boot.SpringApplication;
@@ -17,3 +18,4 @@ public class LotteryApplication {
     }
 
 }
+

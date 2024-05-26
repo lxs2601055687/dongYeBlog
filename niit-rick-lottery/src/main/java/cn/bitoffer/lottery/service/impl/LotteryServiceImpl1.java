@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 public class LotteryServiceImpl1 implements LotteryService {
-    @Autowired
+    @Resource
     protected BlackIpMapper blackIpMapper;
 
     @Autowired

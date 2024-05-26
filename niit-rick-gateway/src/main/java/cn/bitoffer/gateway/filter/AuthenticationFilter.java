@@ -27,21 +27,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 throw new RuntimeException("missing authorization token");
             }
 
-            Map<String, Object> tokenInfo;
-            try {
-                // 解析 token
-                tokenInfo = JwtUtil.validateToken(tokenValue);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("unauthorized access to application");
-            }
-
-            if (tokenInfo == null || tokenInfo.isEmpty() || tokenInfo.get("userId") == null) {
-                throw new RuntimeException("unauthorized access to application. Invalid token or missing userId");
-            }
-
-            String userId = (String) tokenInfo.get("userId");
-            ServerHttpRequest modifiedRequest = exchange.getRequest().mutate().header("X-User-Id", userId).build();
+               //解析token
+            ServerHttpRequest modifiedRequest = exchange.getRequest().mutate().header("X-User-Id",(String) StpUtil.getLoginIdByToken(tokenValue)).build();
             ServerWebExchange modifiedExchange = exchange.mutate().request(modifiedRequest).build();
             return chain.filter(modifiedExchange);
         });
