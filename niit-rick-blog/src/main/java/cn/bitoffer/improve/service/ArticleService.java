@@ -8,12 +8,11 @@ import cn.bitoffer.improve.domain.form.ArticleUpdateForm;
 import cn.bitoffer.improve.domain.vo.ArticleVO;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
+import cn.bitoffer.improve.common.ResponseDTO;
 import cn.bitoffer.improve.kafka.MessageService;
 import cn.bitoffer.improve.model.Article;
 import net.lab1024.sa.base.common.util.SmartBeanUtil;
 import net.lab1024.sa.base.common.util.SmartPageUtil;
-import net.lab1024.sa.base.common.domain.ResponseDTO;
 import net.lab1024.sa.base.common.domain.PageResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.collections4.CollectionUtils;

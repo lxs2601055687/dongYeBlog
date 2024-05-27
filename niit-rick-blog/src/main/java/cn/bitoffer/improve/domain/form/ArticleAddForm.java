@@ -45,7 +45,7 @@ public class ArticleAddForm {
 
     @Schema(description = "分类表中对应category_name", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "分类表中对应category_name 不能为空")
-    @JsonDeserialize(using = DictValueVoDeserializer.class)
+   /* @JsonDeserialize(using = DictValueVoDeserializer.class)*/
     private String articleCategoryName;
 
 }

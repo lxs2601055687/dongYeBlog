@@ -25,4 +25,7 @@ public class ArticleQueryForm extends PageParam{
     @Schema(description = "创建时间")
     private LocalDate createdTimeEnd;
 
+    @Schema(description = "关键字")
+    private String keyword;
+
 }

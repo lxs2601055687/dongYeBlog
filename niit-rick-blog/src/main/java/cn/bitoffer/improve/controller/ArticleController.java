@@ -1,15 +1,19 @@
 package cn.bitoffer.improve.controller;
 
+import cn.bitoffer.improve.common.ResponseDTO;
+import cn.bitoffer.improve.domain.entity.ArticleEntity;
 import cn.bitoffer.improve.domain.form.ArticleAddForm;
 import cn.bitoffer.improve.domain.form.ArticleQueryForm;
 import cn.bitoffer.improve.domain.form.ArticleUpdateForm;
 import cn.bitoffer.improve.domain.vo.ArticleVO;
 import cn.bitoffer.improve.elsmapper.EsArticleMapper;
 import cn.bitoffer.improve.service.ArticleService;
-import net.lab1024.sa.base.common.domain.ValidateList;
-import org.springframework.web.bind.annotation.*;
-import net.lab1024.sa.base.common.domain.ResponseDTO;
+import cn.bitoffer.improve.service.EsService;
 import net.lab1024.sa.base.common.domain.PageResult;
+import net.lab1024.sa.base.common.domain.ValidateList;
+import org.dromara.easyes.core.conditions.select.LambdaEsQueryWrapper;
+import org.springframework.web.bind.annotation.*;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -33,6 +37,9 @@ public class ArticleController {
     private ArticleService articleService;
     @Resource
     private EsArticleMapper esArticleMapper;
+
+    @Resource
+    private EsService esService;
     @Operation(summary = "分页查询 @author 李祥生")
     @PostMapping("/article/queryPage")
     public ResponseDTO<PageResult<ArticleVO>> queryPage(@RequestBody @Valid ArticleQueryForm queryForm) {
@@ -67,5 +74,10 @@ public class ArticleController {
     public Boolean esIndex() {
         esArticleMapper.deleteIndex("article");
         return esArticleMapper.createIndex();
+    }
+
+    @PostMapping("/article/es/search")
+    public ResponseDTO<PageResult<ArticleVO>> esSearch(@RequestBody ArticleQueryForm articleQueryForm) {
+        return esService.queryPage(articleQueryForm);
     }
 }

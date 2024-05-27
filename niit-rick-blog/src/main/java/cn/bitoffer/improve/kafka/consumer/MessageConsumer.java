@@ -34,7 +34,8 @@ public class MessageConsumer {
             try {
                 // 这里写你对接收到的消息的处理逻辑
                 articleDao.insert((ArticleEntity) msg);
-                esArticleMapper.insert((ArticleEntity) msg);
+             Integer result = esArticleMapper.insert((ArticleEntity) msg);
+                System.out.println(result);
                 // 手动ACK
                 ack.acknowledge();
                 log.info("数据同步添加成功! Topic:" + topic + ",Message:" + msg);

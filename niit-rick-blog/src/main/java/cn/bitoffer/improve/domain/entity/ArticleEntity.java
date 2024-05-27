@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Data;
 import org.dromara.easyes.annotation.*;
 import org.dromara.easyes.annotation.rely.Analyzer;
@@ -47,6 +49,7 @@ public class ArticleEntity {
     @MultiIndexField(mainIndexField = @IndexField(fieldType = FieldType.KEYWORD),
             otherIndexFields = {@InnerIndexField(suffix = "zh", fieldType = FieldType.TEXT, analyzer = Analyzer.IK_SMART),
                     @InnerIndexField(suffix = "pinyin", fieldType = FieldType.TEXT, analyzer = Analyzer.PINYIN)})
+    @HighLight
     private String articleContent;
 
     /**
@@ -97,4 +100,6 @@ public class ArticleEntity {
      */
     private String articleCategoryName;
 
+    public ArticleEntity() {
+    }
 }
