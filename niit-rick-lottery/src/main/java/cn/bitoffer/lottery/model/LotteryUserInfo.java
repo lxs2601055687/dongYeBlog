@@ -1,5 +1,8 @@
 package cn.bitoffer.lottery.model;
 
+import lombok.Data;
+
+@Data
 public class LotteryUserInfo {
     Long userId;
     String userName;
@@ -28,4 +31,5 @@ public class LotteryUserInfo {
     public void setIp(String ip) {
         this.ip = ip;
     }
+
 }

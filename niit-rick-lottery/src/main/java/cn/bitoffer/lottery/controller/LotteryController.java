@@ -31,52 +31,8 @@ public class LotteryController {
     @Autowired
     private LotteryServiceImpl3 lotteryServiceImpl3;
 
-
-
-
-
-    @PostMapping(value = "/v1/get_lucky", consumes = "application/json; charset=utf-8")
-    public ResponseEntity<LotteryResult> lotteryV1( @RequestHeader("X-User-Id") Long tokenUserID,@RequestBody LotteryReq req) {
-        LotteryResult lotteryResult = null;
-        try {
-            Long userID = null;
-            if (tokenUserID != null) {
-                userID = tokenUserID;
-            }else {
-                userID = new Long(req.getUserId());
-            }
-            String userName = req.getUserName();
-            String ip = req.getIp();
-            lotteryResult = lotteryServiceImpl1.lottery(userID, userName, ip);
-        } catch (Exception e) {
-            System.out.println("lottery err " + e.getMessage());
-            return ResponseEntity.fail();
-        }
-        return ResponseEntity.resp(ResponseEnum.OK, lotteryResult);
-    }
-
-    @PostMapping(value = "/v2/get_lucky", consumes = "application/json; charset=utf-8")
-    public ResponseEntity<LotteryResult> lotteryV2(@RequestHeader("X-User-Id") Long tokenUserID,@RequestBody LotteryReq req) {
-        LotteryResult lotteryResult = null;
-        try {
-            Long userID = null;
-            if (tokenUserID != null) {
-                userID = tokenUserID;
-            }else {
-                userID = new Long(req.getUserId());
-            }
-            String userName = req.getUserName();
-            String ip = req.getIp();
-            lotteryResult = lotteryServiceImpl2.lottery(userID, userName, ip);
-        } catch (Exception e) {
-            System.out.println("lottery err " + e.getMessage());
-            return ResponseEntity.fail();
-        }
-        return ResponseEntity.resp(ResponseEnum.OK, lotteryResult);
-    }
-
     @PostMapping(value = "/v3/get_lucky", consumes = "application/json; charset=utf-8")
-    public ResponseEntity<LotteryResult> lotteryV3(@RequestBody LotteryReq req, HttpServletRequest request) {
+    public ResponseEntity<LotteryResult> lottery(@RequestBody LotteryReq req, HttpServletRequest request) {
         String ip = ServletUtil.getClientIP(request);
         LotteryResult lotteryResult = null;
         try {
@@ -85,7 +41,6 @@ public class LotteryController {
             lotteryResult =  lotteryServiceImpl3.lottery((long) userID, userName, ip);
 
         } catch (Exception e) {
-            System.out.println("lottery err " + e.getMessage());
             return ResponseEntity.fail();
         }
         return ResponseEntity.resp(ResponseEnum.OK, lotteryResult);
