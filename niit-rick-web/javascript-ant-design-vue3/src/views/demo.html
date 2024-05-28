@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE 流式打印</title>
+</head>
+<body>
+<div id="sse-data"></div>
+
+<script>
+    // 创建一个 EventSource 对象，并指定要连接的 SSE 接口
+
+    const eventSource = new EventSource('http://127.0.0.1:1024/chat?message=讲一下Java责任链设计模式');
+
+    // 监听事件流
+    eventSource.onmessage = function(event) {
+        // 将接收到的数据添加到页面中
+        let sseData = document.getElementById('sse-data');
+        console.log(event.data)
+        let newData = event.data.replace(/\\sb/g, '<br>');
+        sseData.innerHTML = newData + '<br>';
+
+
+    };
+
+    // 监听连接错误
+    eventSource.onerror = function(event) {
+        // 打印错误信息
+        console.error('SSE 连接错误:', event);
+    };
+
+    // 监听连接关闭
+    eventSource.onclose = function() {
+        // 打印连接关闭信息
+        console.log('SSE 连接已关闭');
+    };
+</script>
+</body>
+</html>
