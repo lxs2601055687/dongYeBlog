@@ -23,6 +23,7 @@ public class GlobalCorsConfig {
         // 是否发送cookie
         config.setAllowCredentials(true);
 
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return new CorsWebFilter(source);
