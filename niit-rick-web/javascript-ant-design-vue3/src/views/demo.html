@@ -11,7 +11,7 @@
 <script>
     // 创建一个 EventSource 对象，并指定要连接的 SSE 接口
 
-    const eventSource = new EventSource('http://127.0.0.1:1024/chat?message=讲一下Java责任链设计模式');
+    const eventSource = new EventSource('http://127.0.0.1:10001/blog/chat?message=讲一下Java责任链设计模式');
 
     // 监听事件流
     eventSource.onmessage = function(event) {

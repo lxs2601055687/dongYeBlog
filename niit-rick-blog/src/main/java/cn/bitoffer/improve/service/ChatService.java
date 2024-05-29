@@ -36,7 +36,6 @@ public class ChatService {
                 try {
                     handleGenerationResult(result, emitter);
                 } catch (Exception e) {
-                    System.out.println(e);
                     emitter.completeWithError(e);
                 }
             });

@@ -1,7 +1,6 @@
 package cn.bitoffer.lottery.common;
 
 public enum ErrorCode {
-
     SUCCESS(0, "success"),
     ERR_INTERNAL_SERCER(500, "internal server error"),
     ERR_INPUT_INVALID(8020, "input invalid"),
