@@ -54,7 +54,6 @@ public class ChatService {
     private static void handleGenerationResult(ApplicationResult result, SseEmitter emitter) {
         try {
             String content = String.valueOf(result.getOutput().getText()); // 修改这里获取消息内容的方式
-            content = content.replace("\n\n", "\\sb");
             content = content.replace("\n", "\\sb");
             System.out.println("Received message-----------------------------: " + JsonUtils.toJson(content));
             emitter.send(SseEmitter.event().data(content));
