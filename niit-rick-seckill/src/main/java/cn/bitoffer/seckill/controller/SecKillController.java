@@ -97,6 +97,13 @@ public class SecKillController {
         return ResponseEntity.ok(orderNum);
     }
 
+    /**
+     * 活动秒杀
+     * @param traceID
+     * @param userID
+     * @param data
+     * @return
+     */
     @PostMapping(value = "/v3/sec_kill", consumes = "application/json; charset=utf-8")
     public ResponseEntity<String> secKillV3(@RequestHeader("Trace-ID") String traceID,
                                             @RequestHeader("User-ID") Long userID,
