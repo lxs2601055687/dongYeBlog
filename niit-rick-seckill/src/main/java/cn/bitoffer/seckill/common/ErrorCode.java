@@ -8,6 +8,7 @@ public enum ErrorCode {
     SUCCESS(0, "ok"),
     PARAMS_ERROR(40000, "请求参数错误"),
     SYSTEM_ERROR(50000, "系统内部异常"),
+    SECKILL_ERROR(60000,"活动报名失败")
     ;
 
 
@@ -19,7 +20,7 @@ public enum ErrorCode {
     /**
      * 信息
      */
-    private final String message;
+    private  String message;
 
     ErrorCode(int code, String message) {
         this.code = code;

@@ -12,7 +12,7 @@ spring:
         password: nacos
     kafka:
       #以逗号分隔的主机：端口对列表，用于建立与Kafka的连接
-      bootstrap-servers: 127.0.0.1:9092
+      bootstrap-servers: 106.53.64.184:9092
       producer:
         # 发生错误后，消息重发的次数。
         retries: 0

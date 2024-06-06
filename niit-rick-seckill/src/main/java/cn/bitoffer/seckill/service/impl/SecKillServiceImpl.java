@@ -107,7 +107,6 @@ public class SecKillServiceImpl implements SecKillService {
 
     @Override
     public String secKillV3(String traceID, Long userID, String goodsNum, Integer num) {
-        //kafkaTemplate.send("tp-seckill","aaaaaa");
         Goods goods = goodsMapper.getGoodsByNum(goodsNum);
         String secNum = UUID.randomUUID().toString();
         try {

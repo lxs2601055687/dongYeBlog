@@ -24,7 +24,7 @@ public class ChatService {
     private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
     private static final long SSE_TIMEOUT = TimeUnit.MINUTES.toMillis(2); // 10分钟超时
 
-    public SseEmitter streamCallWithSseEmitter(Message userMsg) throws NoApiKeyException, ApiException, InputRequiredException {
+    public SseEmitter streamCallWithSseEmitter(Message userMsg) throws  ApiException {
         SseEmitter emitter = new SseEmitter(SSE_TIMEOUT);
         Application app = new Application();
         ApplicationParam param = buildGenerationParam(userMsg);

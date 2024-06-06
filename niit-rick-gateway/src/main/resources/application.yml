@@ -52,6 +52,10 @@ spring:
           uri: lb://niit-rick-blog
           predicates:
             - Path=/blog/**
+        - id: niit-rick-seckill
+          uri: lb://niit-rick-seckill
+          predicates:
+            - Path=/sec_kill/**
 
 sa-token:
   # token 名称（同时也是 cookie 名称）

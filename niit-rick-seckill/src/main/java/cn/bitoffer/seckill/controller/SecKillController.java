@@ -1,7 +1,9 @@
 package cn.bitoffer.seckill.controller;
 
+import cn.bitoffer.seckill.common.ErrorCode;
 import cn.bitoffer.seckill.common.ResponseEntity;
 import cn.bitoffer.seckill.common.ResponseEnum;
+import cn.bitoffer.seckill.exception.BusinessException;
 import cn.bitoffer.seckill.model.Goods;
 import cn.bitoffer.seckill.service.SecKillService;
 import lombok.extern.slf4j.Slf4j;
@@ -61,41 +63,6 @@ public class SecKillController {
         System.out.println(data);
         return ResponseEntity.resp(ResponseEnum.OK, data);
     }
-    @PostMapping(value = "/v1/sec_kill", consumes = "application/json; charset=utf-8")
-    public ResponseEntity<String> secKillV1(@RequestHeader("Trace-ID") String traceID,
-                                            @RequestHeader("User-ID") Long userID,
-                                            @RequestBody SecKillV1Req data) {
-        String orderNum = "";
-        //try {
-        //    String goodsNum = data.goodsNum;
-        //    Integer num = data.num;
-        //    orderNum = secKillService.secKillV1(traceID, userID, goodsNum, num);
-        //    System.out.println(orderNum);
-        //} catch (Exception e) {
-        //    System.out.println("seckill err " + e.getMessage());
-        //}
-        String goodsNum = data.goodsNum;
-        Integer num = data.num;
-        orderNum = secKillService.secKillV1(traceID, userID, goodsNum, num);
-        System.out.println(orderNum);
-        return ResponseEntity.ok(orderNum);
-    }
-
-    @PostMapping(value = "/v2/sec_kill", consumes = "application/json; charset=utf-8")
-    public ResponseEntity<String> secKillV2(@RequestHeader("Trace-ID") String traceID,
-                                            @RequestHeader("User-ID") Long userID,
-                                            @RequestBody SecKillV1Req data) {
-        String orderNum = "";
-        try {
-            String goodsNum = data.goodsNum;
-            Integer num = data.num;
-            orderNum = secKillService.secKillV2(traceID, userID, goodsNum, num);
-            System.out.println(orderNum);
-        } catch (Exception e) {
-            System.out.println("seckill err " + e.getMessage());
-        }
-        return ResponseEntity.ok(orderNum);
-    }
 
     /**
      * 活动秒杀
@@ -113,9 +80,9 @@ public class SecKillController {
             String goodsNum = data.goodsNum;
             Integer num = data.num;
             secNum = secKillService.secKillV3(traceID, userID, goodsNum, num);
-            System.out.println(secNum);
         } catch (Exception e) {
-            System.out.println("seckill err " + e.getMessage());
+            throw new BusinessException(ErrorCode.SECKILL_ERROR);
+
         }
         return ResponseEntity.ok(secNum);
     }

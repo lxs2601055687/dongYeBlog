@@ -11,7 +11,6 @@ import cn.bitoffer.lottery.constant.Constants;
 import cn.bitoffer.lottery.redis.RedisUtil;
 import cn.bitoffer.lottery.utils.UtilTools;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 @Service
